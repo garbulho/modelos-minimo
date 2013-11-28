@@ -2,25 +2,72 @@
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
      <link href='http://fonts.googleapis.com/css?family=Fjord+One|Roboto+Slab:400,300,100,700' rel='stylesheet' type='text/css'>
+     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <title>dnd</title>
 
     <link rel="stylesheet" type="text/css" href="dnd.css">
 
     <script>
+    var topDressed = false;
+    var bottomDressed = false;
+    var hairDressed = false;
+
     function dragIt(target, e) {
-        event.dataTransfer.effectAllowed = 'copy';
-        event.dataTransfer.dropEffect = 'copy';     
-
-        console.log(target);
-
-        e.dataTransfer.setData('SpanImg', target.id);
+       /* event.dataTransfer.effectAllowed = 'copy';
+        event.dataTransfer.dropEffect = 'copy'; */   
+        console.log(); 
+        e.dataTransfer.setData('SpanImgId', target.id);
+        e.dataTransfer.setData('SpanImgClass', target.className);
     }
     function dropIt(target, e) {
-        var id = e.dataTransfer.getData('SpanImg');
-        target.appendChild(document.getElementById(id)); 
-        e.preventDefault();
+        var SpanId = e.dataTransfer.getData('SpanImgId');
+        var SpanClass = e.dataTransfer.getData('SpanImgClass');
 
-        console.log(target);
+        if (SpanClass == "top") {
+            if (topDressed == false) {
+                $("#drop-top")[0].appendChild(document.getElementById(SpanId));
+                topDressed = true;
+            } else {
+                $("#top-styles")[0].appendChild($("#drop-top").children()[0]);
+                $("#drop-top")[0].appendChild(document.getElementById(SpanId));
+            }
+        }
+        if (SpanClass == "bottom") {
+            if (bottomDressed == false) {
+                $("#drop-bottom")[0].appendChild(document.getElementById(SpanId));
+                bottomDressed = true;
+            } else {
+                $("#bottom-styles")[0].appendChild($("#drop-bottom").children()[0]);
+                $("#drop-bottom")[0].appendChild(document.getElementById(SpanId));
+            }
+        }
+        if (SpanClass == "hair") {
+            if (hairDressed == false) {
+                $("#drop-hair")[0].appendChild(document.getElementById(SpanId));
+                hairDressed = true;
+            } else {
+                $("#hair-styles")[0].appendChild($("#drop-hair").children()[0]);
+                $("#drop-hair")[0].appendChild(document.getElementById(SpanId));
+            }
+        }
+        
+    }
+    function returnIt(target, e) {
+        var SpanId = e.dataTransfer.getData('SpanImgId');
+        var SpanClass = e.dataTransfer.getData('SpanImgClass');
+
+        if (SpanClass == "top") {
+            $("#top-styles")[0].appendChild(document.getElementById(SpanId));
+            topDressed = false;
+        }
+        if (SpanClass == "bottom") {
+            $("#bottom-styles")[0].appendChild(document.getElementById(SpanId));
+            bottomDressed = false;
+        }
+        if (SpanClass == "hair") {
+            $("#hair-styles")[0].appendChild(document.getElementById(SpanId));
+            hairDressed = false;
+        }
     }
     function trashIt(target, e) {
         var id = e.dataTransfer.getData('SpanImg');
@@ -32,7 +79,6 @@
         var d_node = document.getElementById(id);
         d_node.parentNode.removeChild(d_node);
 
-        console.log(target);
     }
     
     /*$( document ).ready(function() {
@@ -47,15 +93,15 @@
 <body>
     <h1> _teste 01: <red>drag and drop</red> </h1>
     <div id="left">
-        <div id="model">
+        <div id="model" ondrop="dropIt(this, event)" ondragenter="return false" ondragover="return false">
             <img src="images/corpo.png" />
-            <div class="drop-zone" id="drop-hair" ondrop="dropIt(this, event)" ondragenter="return false" ondragover="return false"></div>
-            <div class="drop-zone" id="drop-top" ondrop="dropIt(this, event)" ondragenter="return false" ondragover="return false"></div>
-            <div class="drop-zone" id="drop-bottom" ondrop="dropIt(this, event)" ondragenter="return false" ondragover="return false"></div>
-            <div class="drop-zone" id="drop-shoes" ondrop="dropIt(this, event)" ondragenter="return false" ondragover="return false"></div>
+            <div class="drop-zone" id="drop-hair" ></div>
+            <div class="drop-zone" id="drop-top"></div>
+            <div class="drop-zone" id="drop-bottom"></div>
+            <div class="drop-zone" id="drop-shoes"></div>
         </div>
     </div>
-    <div id="right">
+    <div id="right"  ondrop="returnIt(this, event)" ondragenter="return false" ondragover="return false">
         <div class="container" id="hair-styles">
             <span draggable="true" class="hair" id="cabelo01" ondragstart="dragIt(this, event)"><img src="images/cabelo01.png"></span>
         </div>
