@@ -1,0 +1,72 @@
+<html>
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+     <link href='http://fonts.googleapis.com/css?family=Fjord+One|Roboto+Slab:400,300,100,700' rel='stylesheet' type='text/css'>
+    <title>dnd</title>
+
+    <link rel="stylesheet" type="text/css" href="dnd.css">
+
+    <script>
+    function dragIt(target, e) {
+        event.dataTransfer.effectAllowed = 'copy';
+        event.dataTransfer.dropEffect = 'copy';     
+
+        console.log(target);
+
+        e.dataTransfer.setData('SpanImg', target.id);
+    }
+    function dropIt(target, e) {
+        var id = e.dataTransfer.getData('SpanImg');
+        target.appendChild(document.getElementById(id)); 
+        e.preventDefault();
+
+        console.log(target);
+    }
+    function trashIt(target, e) {
+        var id = e.dataTransfer.getData('SpanImg');
+        removeElement(id);
+
+        console.log(target);
+    }
+    function removeElement(id)	{
+        var d_node = document.getElementById(id);
+        d_node.parentNode.removeChild(d_node);
+
+        console.log(target);
+    }
+    
+    /*$( document ).ready(function() {
+        if ()
+    });*/
+    </script>
+
+
+
+</head>
+
+<body>
+    <h1> _teste 01: <red>drag and drop</red> </h1>
+    <div id="left">
+        <div id="model">
+            <img src="images/corpo.png" />
+            <div class="drop-zone" id="drop-hair" ondrop="dropIt(this, event)" ondragenter="return false" ondragover="return false"></div>
+            <div class="drop-zone" id="drop-top" ondrop="dropIt(this, event)" ondragenter="return false" ondragover="return false"></div>
+            <div class="drop-zone" id="drop-bottom" ondrop="dropIt(this, event)" ondragenter="return false" ondragover="return false"></div>
+            <div class="drop-zone" id="drop-shoes" ondrop="dropIt(this, event)" ondragenter="return false" ondragover="return false"></div>
+        </div>
+    </div>
+    <div id="right">
+        <div class="container" id="hair-styles">
+            <span draggable="true" class="hair" id="cabelo01" ondragstart="dragIt(this, event)"><img src="images/cabelo01.png"></span>
+        </div>
+        <div class="container" id="top-styles">
+            <span draggable="true" class="top" id="blusa01" ondragstart="dragIt(this, event)"><img dressed="images/blusa01-1.png" src="images/blusa01-1.png"></span>
+            <span draggable="true" class="top" id="blusa02" ondragstart="dragIt(this, event)"><img dressed="images/blusa02-1.png" src="images/blusa02-1.png"></span>
+        </div>
+        <div class="container" id="bottom-styles">
+            <span draggable="true" class="bottom" id="saia01" ondragstart="dragIt(this, event)"><img src="images/saia01.png"></span>
+        </div>
+        <div class="container" id="shoes-styles"> </div>
+    </div>
+</body>
+</html>
