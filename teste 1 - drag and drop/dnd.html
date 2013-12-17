@@ -1,100 +1,53 @@
 <html>
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
-     <link href='http://fonts.googleapis.com/css?family=Fjord+One|Roboto+Slab:400,300,100,700' rel='stylesheet' type='text/css'>
-     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Fjord+One|Roboto+Slab:400,300,100,700' rel='stylesheet' type='text/css'>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <title>dnd</title>
 
     <link rel="stylesheet" type="text/css" href="dnd.css">
 
     <script>
-    var topDressed = false;
-    var bottomDressed = false;
-    var hairDressed = false;
+    var isDressed = {
+        top : false,
+        bottom : false,
+        hair : false,
+        shoes : false
+    }
 
     function dragIt(target, e) {
-       /* event.dataTransfer.effectAllowed = 'copy';
-        event.dataTransfer.dropEffect = 'copy'; */   
-        console.log(); 
         e.dataTransfer.setData('SpanImgId', target.id);
         e.dataTransfer.setData('SpanImgClass', target.className);
     }
     function dropIt(target, e) {
-        var SpanId = e.dataTransfer.getData('SpanImgId');
         var SpanClass = e.dataTransfer.getData('SpanImgClass');
-
-        if (SpanClass == "top") {
-            if (topDressed == false) {
-                $("#drop-top")[0].appendChild(document.getElementById(SpanId));
-                topDressed = true;
-            } else {
-                $("#top-styles")[0].appendChild($("#drop-top").children()[0]);
-                $("#drop-top")[0].appendChild(document.getElementById(SpanId));
-            }
-        }
-        if (SpanClass == "bottom") {
-            if (bottomDressed == false) {
-                $("#drop-bottom")[0].appendChild(document.getElementById(SpanId));
-                bottomDressed = true;
-            } else {
-                $("#bottom-styles")[0].appendChild($("#drop-bottom").children()[0]);
-                $("#drop-bottom")[0].appendChild(document.getElementById(SpanId));
-            }
-        }
-        if (SpanClass == "hair") {
-            if (hairDressed == false) {
-                $("#drop-hair")[0].appendChild(document.getElementById(SpanId));
-                hairDressed = true;
-            } else {
-                $("#hair-styles")[0].appendChild($("#drop-hair").children()[0]);
-                $("#drop-hair")[0].appendChild(document.getElementById(SpanId));
-            }
-        }
-        
+        var dressedSpan = $("#" + e.dataTransfer.getData('SpanImgId'));
+        dressUp (SpanClass, dressedSpan);
     }
     function returnIt(target, e) {
-        var SpanId = e.dataTransfer.getData('SpanImgId');
         var SpanClass = e.dataTransfer.getData('SpanImgClass');
-
-        if (SpanClass == "top") {
-            $("#top-styles")[0].appendChild(document.getElementById(SpanId));
-            topDressed = false;
-        }
-        if (SpanClass == "bottom") {
-            $("#bottom-styles")[0].appendChild(document.getElementById(SpanId));
-            bottomDressed = false;
-        }
-        if (SpanClass == "hair") {
-            $("#hair-styles")[0].appendChild(document.getElementById(SpanId));
-            hairDressed = false;
+        undress(SpanClass);
+    }
+    function dressUp (SpanClass, dressedSpan) {
+        var dressedImg = dressedSpan.children("img").attr("dressed");
+        $("#drop-" + SpanClass).children().remove();
+        dressedSpan.clone().appendTo($("#drop-" + SpanClass)[0]);
+        if (typeof dressedImg !== 'undefined') {
+            $("#drop-" + SpanClass + "> span > img").attr("src", dressedImg);
         }
     }
-    function trashIt(target, e) {
-        var id = e.dataTransfer.getData('SpanImg');
-        removeElement(id);
-
-        console.log(target);
+    function undress (SpanClass) {
+         $("#drop-" + SpanClass).children().remove();
+        isDressed.SpanClass = false;
     }
-    function removeElement(id)	{
-        var d_node = document.getElementById(id);
-        d_node.parentNode.removeChild(d_node);
-
-    }
-    
-    /*$( document ).ready(function() {
-        if ()
-    });*/
     </script>
-
-
-
 </head>
 
 <body>
-    <h1> _teste 01: <red>drag and drop</red> </h1>
+    <h1> _teste 01: <span class="red">drag and drop</span> </h1>
     <div id="left">
         <div id="model" ondrop="dropIt(this, event)" ondragenter="return false" ondragover="return false">
-            <img src="images/corpo.png" />
+            <img src="images/body.png" />
             <div class="drop-zone" id="drop-hair" ></div>
             <div class="drop-zone" id="drop-top"></div>
             <div class="drop-zone" id="drop-bottom"></div>
@@ -103,14 +56,14 @@
     </div>
     <div id="right"  ondrop="returnIt(this, event)" ondragenter="return false" ondragover="return false">
         <div class="container" id="hair-styles">
-            <span draggable="true" class="hair" id="cabelo01" ondragstart="dragIt(this, event)"><img src="images/cabelo01.png"></span>
+            <span draggable="true" class="hair" id="hair01" ondragstart="dragIt(this, event)"><img src="images/hair01.png"></span>
         </div>
         <div class="container" id="top-styles">
-            <span draggable="true" class="top" id="blusa01" ondragstart="dragIt(this, event)"><img dressed="images/blusa01-1.png" src="images/blusa01-1.png"></span>
-            <span draggable="true" class="top" id="blusa02" ondragstart="dragIt(this, event)"><img dressed="images/blusa02-1.png" src="images/blusa02-1.png"></span>
+            <span draggable="true" class="top" id="top01" ondragstart="dragIt(this, event)"><img dressed="images/top01-1.png" src="images/top01.png"></span>
+            <span draggable="true" class="top" id="top02" ondragstart="dragIt(this, event)"><img dressed="images/top02-1.png" src="images/top02.png"></span>
         </div>
         <div class="container" id="bottom-styles">
-            <span draggable="true" class="bottom" id="saia01" ondragstart="dragIt(this, event)"><img src="images/saia01.png"></span>
+            <span draggable="true" class="bottom" id="bottom01" ondragstart="dragIt(this, event)"><img src="images/bottom01.png"></span>
         </div>
         <div class="container" id="shoes-styles"> </div>
     </div>
