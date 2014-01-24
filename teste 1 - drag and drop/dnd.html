@@ -1,71 +1,82 @@
+<!DOCTYPE html>
 <html>
-<head>
     <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
     <link href='http://fonts.googleapis.com/css?family=Fjord+One|Roboto+Slab:400,300,100,700' rel='stylesheet' type='text/css'>
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    <title>dnd</title>
-
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="js/elements.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/dragndrop.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="dnd.css">
-
-    <script>
-    var isDressed = {
-        top : false,
-        bottom : false,
-        hair : false,
-        shoes : false
-    }
-
-    function dragIt(target, e) {
-        e.dataTransfer.setData('SpanImgId', target.id);
-        e.dataTransfer.setData('SpanImgClass', target.className);
-    }
-    function dropIt(target, e) {
-        var SpanClass = e.dataTransfer.getData('SpanImgClass');
-        var dressedSpan = $("#" + e.dataTransfer.getData('SpanImgId'));
-        dressUp (SpanClass, dressedSpan);
-    }
-    function returnIt(target, e) {
-        var SpanClass = e.dataTransfer.getData('SpanImgClass');
-        undress(SpanClass);
-    }
-    function dressUp (SpanClass, dressedSpan) {
-        var dressedImg = dressedSpan.children("img").attr("dressed");
-        $("#drop-" + SpanClass).children().remove();
-        dressedSpan.clone().appendTo($("#drop-" + SpanClass)[0]);
-        if (typeof dressedImg !== 'undefined') {
-            $("#drop-" + SpanClass + "> span > img").attr("src", dressedImg);
-        }
-    }
-    function undress (SpanClass) {
-         $("#drop-" + SpanClass).children().remove();
-        isDressed.SpanClass = false;
-    }
-    </script>
+    <title>HowItLooks</title> 
+    <!--[if IE 8]>
+        <script type="text/javascript">
+            $(".rounded-corner").addBehavior("PIE.htc");
+        </script>
+    <![endif]-->
 </head>
 
-<body>
-    <h1> _teste 01: <span class="red">drag and drop</span> </h1>
+<body class="rounded-corner">
     <div id="left">
-        <div id="model" ondrop="dropIt(this, event)" ondragenter="return false" ondragover="return false">
-            <img src="images/body.png" />
+        <div id="model" class="rounded-corner" ondrop="dropIt()" ondragenter="return false" ondragover="return false">
+            <img draggable="false" src="images/model.png" />
             <div class="drop-zone" id="drop-hair" ></div>
             <div class="drop-zone" id="drop-top"></div>
             <div class="drop-zone" id="drop-bottom"></div>
             <div class="drop-zone" id="drop-shoes"></div>
         </div>
     </div>
-    <div id="right"  ondrop="returnIt(this, event)" ondragenter="return false" ondragover="return false">
-        <div class="container" id="hair-styles">
-            <span draggable="true" class="hair" id="hair01" ondragstart="dragIt(this, event)"><img src="images/hair01.png"></span>
+    <div id="right">
+        <ul class="menu" id="sections">
+            <li class="tab rounded-corner">
+                Roupas
+            </li>
+            <li class="tab rounded-corner">
+                Modelo
+            </li>
+            <li class="tab rounded-corner">
+                Fundo
+            </li>
+            <li class="tab rounded-corner">
+                Efeitos
+            </li>
+        </ul>
+        <div id="container" ondrop="returnIt($(this))" ondragenter="return false" ondragover="return false"></div>
+        <div id="rightColumn">
+            <form method="get" action="http://www.google.com" class="search">
+                <input type="text" class="text-input rounded-corner" name="q" size="21" maxlength="120" placeholder="Busca...">
+                <input type="submit" value=">" class="button rounded-corner">
+            </form>
+            <ul class="menu">
+                <li>Recentemente usado</li>
+                <li>Recomendado para você</li>
+                <li>Favoritos</li>
+            </ul>
+            <ul class="search-results">
+                Resultados da busca:
+                <li>5 À SEC</li>
+                <li>A.NIEMEYER</li>
+                <li>ADRIANA DEGREAS</li>
+                <li>AMSTERDAM SAUER</li>
+                <li>ARAMIS</li>
+            </ul>
         </div>
-        <div class="container" id="top-styles">
-            <span draggable="true" class="top" id="top01" ondragstart="dragIt(this, event)"><img dressed="images/top01-1.png" src="images/top01.png"></span>
-            <span draggable="true" class="top" id="top02" ondragstart="dragIt(this, event)"><img dressed="images/top02-1.png" src="images/top02.png"></span>
-        </div>
-        <div class="container" id="bottom-styles">
-            <span draggable="true" class="bottom" id="bottom01" ondragstart="dragIt(this, event)"><img src="images/bottom01.png"></span>
-        </div>
-        <div class="container" id="shoes-styles"> </div>
+        <div id="message">Teste quantos looks quiser no HowItLooks.<br/>Arraste a peça para a modelo e veja como fica.</div>
+        <!-- <span draggable="true" class="bottom" id="bottom01" ondragstart="dragIt(this, event)"> -->
     </div>
+    <script>
+        $(document).ready(function() {
+            //$(".rounded-corner").addBehavior("PIE.htc");
+            createContainers();
+            createElements();
+            switchTabs($(".tab:eq(0)"));
+            $(".tab").click(function() {
+                switchTabs($(this));
+            });
+            $(".menu > li").click(function(){
+                selectMenuOption($(this));
+            });
+            hoverIcon();
+        });
+    </script>
 </body>
+
 </html>
