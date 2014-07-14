@@ -85,6 +85,7 @@ function createElements(objectElem) {
 	}
 
 	setLabels($("#content_roupas .catElements li"));
+	centerImg($(".catElements li"));
 }
 
 function setLabels(elemList) {
@@ -114,6 +115,25 @@ function setLabels(elemList) {
 					$(this).children('.label').css("display", "none");
 				}
 			});
+		});
+	});
+}
+
+function centerImg(elemList) {
+	$(elemList).each(function(i, e) {
+		var img = $(e).find("img");
+		console.log(img);
+		var auxImg = $("<img/>");
+		auxImg.attr("src", img.attr("src"));
+		auxImg.load(function() {
+			if (this.width < $(e).width() && this.height < $(e).height()) {
+				img.addClass("noResize");
+			} else if (this.width > this.height) {
+				img.addClass("horizontal");
+			} else {
+				img.addClass("vertical")
+			}
+			vAlign(img);
 		});
 	});
 }

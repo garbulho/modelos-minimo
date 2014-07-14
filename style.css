@@ -243,9 +243,17 @@ html {
 		opacity: 0.6;
 		background: #efefef;
 	}
-		.catElements li img {
+		.catElements li img.noResize {
+			height: auto;
+			width: auto;
+		}
+		.catElements li img.vertical {
 			height: 100%;
 			width: auto;
+		}
+		.catElements li img.horizontal {
+			width: 100%;
+			height: auto;
 		}
 		.catElements li .label {
 			position: absolute;
@@ -314,6 +322,7 @@ html {
 
 .dressed {
 	position: absolute;
+	margin-top: 0 !important;
 }
 
 .fundo {
