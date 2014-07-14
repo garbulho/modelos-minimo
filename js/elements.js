@@ -195,7 +195,7 @@ globalElements = {
 			},
 			layer: 4,
 			marca: ""
-		}		
+		}
 	],
 	modelo: [
 		{

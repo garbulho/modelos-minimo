@@ -48,15 +48,7 @@ function createElementContainer(container, callback) {
 function createElements(objectElem) {
 	var ulElements = $("<ul class='catElements fLeft'></ul>");
 	var category = $(objectElem).attr("id").substr(8);
-	if ($(globalElements[category]).length >= 12) {
-		var controller = "<div class='controller fullWidth'>";
-		controller += "<span class='previous'><</span>";
-		for (var i = 0; i < $(globalElements[category]).length/12; i++) {
-			controller += "<span class='page'>" + (i+1) + "</span>";
-		}
-		controller += "<span class='next'>></span>";
-		$(objectElem).append($(controller));
-	}
+
 	$(globalElements[category]).each(function(i, e) {
 		var thisElem = $("<li class='bShadowLight rCSmall border fLeft' ondrag='dragIt(this)' onclick='selectProd(this)' draggable=true></li>");
 
@@ -75,6 +67,10 @@ function createElements(objectElem) {
 	});
 	$(objectElem).append(ulElements);
 	$(ulElements).children("li:nth-child(3n)").css("margin-right", 0);
+
+	if ($(globalElements[category]).length >= 12) {
+		scrollPages(objectElem, $(globalElements[category]));
+	}
 }
 
 function changeTab(tab) {
@@ -82,6 +78,33 @@ function changeTab(tab) {
 	$(".containerContent li.active").removeClass("active");
 	$(tab).addClass("active");
 	$(".containerContent>li").eq($(tab).index()).addClass("active");
+}
+
+function scrollPages(parent, list) {
+	var controller = "<div class='controller fullWidth'>";
+	controller += "<span onclick='scrollThis(this)' class='previous'><</span>";
+	for (var i = 0; i < $(list).length/12; i++) {
+		controller += "<span onclick='scrollThis(this)' class='page'>" + (i+1) + "</span>";
+	}
+	controller += "<span onclick='scrollThis(this)' class='next'>></span>";
+	$(parent).append($(controller));
+	$(".controller .page").eq(0).click();
+}
+
+function scrollThis(elem) {
+	var catElements = $(elem).parents(".category").find(".catElements");
+	if ($(elem).hasClass("page")) {
+		var page = parseInt($(elem).html()) - 1;
+		catElements.animate({
+			"top": page * (-412) + 10
+		});
+		$(elem).siblings(".active").removeClass("active");
+		$(elem).addClass("active");
+	} else if ($(elem).hasClass("next") && $(elem).siblings(".page.active").next(".page").length > 0) {
+		$(elem).siblings(".page.active").next(".page").click();
+	} else if ($(elem).hasClass("previous") && $(elem).siblings(".page.active").prev(".page").length > 0) {
+		$(elem).siblings(".page.active").prev(".page").click();
+	}
 }
 
 function dragIt(elem) {
@@ -94,7 +117,7 @@ function dropIt(area) {
 			dressIt($(draggedElem).children());
 			selectIt($(draggedElem));
 		}
-	} else if ($(area).attr("id") === "elements") {
+	} else if ($(area).attr("id") === "elements" && !$(draggedElem).parent().hasClass("catElements")) {
 		undressIt($(draggedElem));
 	}
 }

@@ -234,7 +234,7 @@ html {
 		padding: 5px;
 	}
 	.catElements li.disabled {
-		border: 3px solid #444;
+		border: 3px solid #000;
 		opacity: 0.6;
 		background: #efefef;
 	}
