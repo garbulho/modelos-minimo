@@ -53,16 +53,28 @@ function createElements(objectElem) {
 		var thisElem = $("<li class='bShadowLight rCSmall border fLeft' ondrag='dragIt(this)' onclick='selectProd(this)' draggable=true></li>");
 
 		var thisImg = $("<img id='" + e.id + "' class='draggable " + category + "' ondrag='dragIt(this)' onclick='selectProd(this)' src='images/" + e.id + ".png'>");
-		thisImg.attr("title", e.title);
-		thisImg.attr("type", e.type);
+		    thisImg.attr("title", e.title);
+		    thisImg.attr("type", e.type);
+
+		if (category === "roupas") {
+			var thisLabel = $("<div class='label fullWidth'></div>");
+		    thisLabel.append("<h3>" + e.title + "</h3>");
+			if (e.marca !== "" && e.marca !== undefined && e.marca !== null) {
+				thisLabel.append("<h4>" + e.marca + "</h4>");
+			} else {
+				thisLabel.append("<h4>Marca não definida</h4>");
+			}
+		}
 
 		ulElements.append(thisElem);
-		thisElem.append(thisImg);
+		thisElem.append(thisImg, thisLabel);
 
-		if (category === "roupas" || category == "efeitos") {
+		if (e.position !== "" && e.position !== undefined && e.position !== null) {
 			thisImg.css("top", e.position.top)
-			.css("left", e.position.left)
-			.css("z-index", e.layer);
+			       .css("left", e.position.left);
+		}
+		if (e.layer !== "" && e.layer !== undefined && e.layer !== null) {
+			thisImg.css("z-index", e.layer);
 		}
 	});
 	$(objectElem).append(ulElements);
@@ -71,6 +83,39 @@ function createElements(objectElem) {
 	if ($(globalElements[category]).length >= 12) {
 		scrollPages(objectElem, $(globalElements[category]));
 	}
+
+	setLabels($("#content_roupas .catElements li"));
+}
+
+function setLabels(elemList) {
+	$(elemList).each(function(i, e) {
+		var label = $(e).find(".label");
+		label.css({
+			left: -50,
+			opacity: 0,
+			display: "none"
+		});
+		label.parent().hover(function() {
+			$(this).children('.label').stop(true, true);
+			$(this).children('.label').css({
+				display: "block",
+				left: -50
+			});
+			$(this).children('.label').animate({
+				left: 0,
+				opacity: 100
+			});
+		}, function() {
+		    $(this).children('.label').animate({
+				left: 50,
+				opacity: 0
+			}, {
+				complete: function() {
+					$(this).children('.label').css("display", "none");
+				}
+			});
+		});
+	});
 }
 
 function changeTab(tab) {
@@ -124,7 +169,7 @@ function dropIt(area) {
 
 function selectIt(elem) {
 	$(elem).addClass("disabled");
-	$(elem).children().attr("elemId", $(elem).children().attr("id"))
+	$(elem).children("img").attr("elemId", $(elem).children().attr("id"))
 		              .removeAttr("id");
 }
 
@@ -143,6 +188,8 @@ function dressIt(elem) {
 		undressIt(sameItem);
 	}
 	$("#canvas").append($(dressed));
+	//Gambiarra para concertar um erro esquisito
+	$("#canvas").find(".label").remove();
 }
 
 function undressIt(elem) {
