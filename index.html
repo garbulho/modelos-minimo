@@ -9,13 +9,13 @@
 <body>
     <div class="content bShadowDark rCSmall vAlign">
         <div class="fLeft rCSmall border">
-            <div id="canvas" class="canvasArea" ondrop="dropIt(this)" ondragenter="return false" ondragover="return false">
+            <div id="canvas" class="canvasArea" ondrop="dropIt(event, this)" ondragenter="return false" ondragover="return false">
                 
             </div>
         </div>
 
         <div class="fRight rightColumn">
-            <div id="elements" class="elementsArea fLeft" ondrop="dropIt(this)" ondragenter="return false" ondragover="return false">
+            <div id="elements" class="elementsArea fLeft" ondrop="dropIt(event, this)" ondragenter="return false" ondragover="return false">
                 <!-- gerar conteudo a partir de objeto recebido -->
             </div>
             <div class="fRight toolBar">

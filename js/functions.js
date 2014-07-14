@@ -50,9 +50,9 @@ function createElements(objectElem) {
 	var category = $(objectElem).attr("id").substr(8);
 
 	$(globalElements[category]).each(function(i, e) {
-		var thisElem = $("<li class='bShadowLight rCSmall border fLeft' ondrag='dragIt(this)' onclick='selectProd(this)' draggable=true></li>");
+		var thisElem = $("<li class='bShadowLight rCSmall border fLeft' ondrag='dragIt(event, this)' onclick='selectProd(this)' draggable=true></li>");
 
-		var thisImg = $("<img id='" + e.id + "' class='draggable " + category + "' ondrag='dragIt(this)' onclick='selectProd(this)' src='images/" + e.id + ".png'>");
+		var thisImg = $("<img id='" + e.id + "' class='draggable " + category + "' ondrag='dragIt(event, this)' onclick='selectProd(this)' src='images/" + e.id + ".png'>");
 		    thisImg.attr("title", e.title);
 		    thisImg.attr("type", e.type);
 
@@ -172,11 +172,12 @@ function scrollThis(elem) {
 	}
 }
 
-function dragIt(elem) {
+function dragIt(event, elem) {
 	draggedElem = $(elem);
 }
 
-function dropIt(area) {
+function dropIt(event, area) {
+	event.preventDefault();
 	if ($(area).attr("id") === "canvas") {
 		if (!$(draggedElem).hasClass("disabled")) {
 			dressIt($(draggedElem).children());
