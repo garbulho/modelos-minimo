@@ -46,10 +46,12 @@
 
     <script>
         $(document).ready(function() {
+            console.log("halo");
             createElementContainer($("#elements"), function() {
                 $(".containerContent li").each(function(i, e) {
                     createElements(e);
                 });
+                fixColors($(".containerMenu"));
             });
             vAlign($(".vAlign"));
             $(".containerMenu li").eq(0).click();

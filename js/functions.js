@@ -64,6 +64,9 @@ function createElements(objectElem) {
 			} else {
 				thisLabel.append("<h4>Marca não definida</h4>");
 			}
+			thisLabel.attr('unselectable', 'on')
+                     .css('user-select', 'none')
+                     .on('selectstart', false);
 		}
 
 		ulElements.append(thisElem);
@@ -122,7 +125,6 @@ function setLabels(elemList) {
 function centerImg(elemList) {
 	$(elemList).each(function(i, e) {
 		var img = $(e).find("img");
-		console.log(img);
 		var auxImg = $("<img/>");
 		auxImg.attr("src", img.attr("src"));
 		auxImg.load(function() {
@@ -135,6 +137,13 @@ function centerImg(elemList) {
 			}
 			vAlign(img);
 		});
+	});
+}
+
+function fixColors(elemList) {
+	colors = ["#e9e9e9", "#ddd", "#d5d5d5", "#c8c8c8"];
+	$(elemList).children().each(function(i, e) {
+		$(e).css("background-color", colors[i]);
 	});
 }
 

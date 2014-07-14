@@ -104,6 +104,7 @@ html {
 /************/
 
 .textInput {
+	width: 165px;
 	-webkit-border-radius: 5px;
        -moz-border-radius: 5px;
 	        border-radius: 5px;
@@ -196,6 +197,7 @@ html {
 		background: #c8c8c8;
 		float: left;
 		cursor: pointer;
+		color: #555;
 	}
 	.containerMenu li.active {
 		height: 36px;
@@ -319,6 +321,12 @@ html {
 	font-weight: bold;
 	padding: 10px 5px;
 }
+	.searchResults li {
+		font-weight: lighter;
+		line-height: 20px;
+		margin-top: 5px;
+		font-size: 13px;
+	}
 
 .dressed {
 	position: absolute;
