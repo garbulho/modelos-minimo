@@ -243,6 +243,7 @@ function setDressedPieces(parent) {
 function undressIt(elem) {
 	unselectIt($("[elemId='" + $(elem).attr("id") + "']"));
 	$(elem).remove();
+	setDressedPieces($("#canvas"));
 }
 
 function selectProd(elem) {
