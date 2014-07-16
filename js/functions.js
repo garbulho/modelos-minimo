@@ -95,7 +95,7 @@ function setLabels(elemList) {
 	$(elemList).each(function(i, e) {
 		var label = $(e).find(".label");
 		label.css({
-			left: -50,
+			left: 0,
 			opacity: 0,
 			display: "none"
 		});
@@ -103,15 +103,15 @@ function setLabels(elemList) {
 			$(this).children('.label').stop(true, true);
 			$(this).children('.label').css({
 				display: "block",
-				left: -50
+				bottom: "-50%"
 			});
 			$(this).children('.label').animate({
-				left: 0,
+				bottom: 0,
 				opacity: 100
 			});
 		}, function() {
 		    $(this).children('.label').animate({
-				left: 50,
+				bottom: "50%",
 				opacity: 0
 			}, {
 				complete: function() {
@@ -220,6 +220,24 @@ function dressIt(elem) {
 	$("#canvas").append($(dressed));
 	//Gambiarra para concertar um erro esquisito
 	$("#canvas").find(".label").remove();
+	console.log("dressIt");
+	setDressedPieces($("#canvas"));
+}
+
+function setDressedPieces(parent) {
+	var dressed = [];
+	$(parent).find(".dressed").each(function(i, e) {
+		var prodId = $(e).attr("id");
+		for (var i = 0; i < Object.keys(globalElements).length; i++) {
+			var category = Object.keys(globalElements)[i];
+			$.grep(globalElements[category], function(j){
+				if (j.id === prodId) {
+					dressed.push(j);
+				}
+			});
+		}
+	});
+	console.log(dressed);
 }
 
 function undressIt(elem) {
