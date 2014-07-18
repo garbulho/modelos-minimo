@@ -24,9 +24,9 @@
                     <input type="submit" value=">" class="btnBlack">
                 </form>
                 <ul class="menu fullWidth">
-                    <li>Recentemente usado</li>
-                    <li>Recomendado para você</li>
-                    <li>Favoritos</li>
+                    <li auxid="content_recent" onclick='changePage(this)'>Recentemente usado</li>
+                    <li auxid="content_recomended" onclick='changePage(this)'>Recomendado para você</li>
+                    <li auxid="content_fav" onclick='changePage(this)'>Favoritos</li>
                 </ul>
                 <ul class="searchResults fullWidth borderTop">
                     Resultados da Busca
@@ -46,7 +46,8 @@
 
     <script>
         $(document).ready(function() {
-            console.log("halo");
+            createObject();
+            createPagesContent();
             createElementContainer($("#elements"), function() {
                 $(".containerContent li").each(function(i, e) {
                     createElements(e);
