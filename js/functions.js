@@ -120,7 +120,7 @@ function copyProduct(product, destination) {
 	};
 
 	//adiciona o novo
-	if (content.length > 0) {
+	if (content.length > 0 && product !== [] && product !== null) {
 		for (var i = 0; i < content.length; i++) { //remove repetidos
 			if (content[i].id === product.id) {
 				content.splice(i,1);
@@ -130,7 +130,7 @@ function copyProduct(product, destination) {
 			content.splice(11,1);
 		}
 		content.splice(0,0,product);
-	} else {
+	} else if (product !== [] && product !== null) {
 		content.push(product);
 	}
 	
@@ -472,12 +472,29 @@ function selectProd(elem) {
 
 function favThis(elem) {
 	event.stopPropagation();
-	$(elem).addClass("selected");
 	var thisImage = $(elem).parent().siblings("img");
-	console.log(thisImage.attr("id"));
-	console.log(getObjByAttr("id", thisImage.attr("id")));
-	getObjByAttr("id", thisImage.attr("id")).fav = true;
-	copyProduct(getObjByAttr("id", thisImage.attr("id")), $("#content_fav"));
+
+	if (!thisImage.hasClass("copy")) {
+		if (!$(elem).hasClass("selected")) {
+			$(elem).addClass("selected");
+			thisImage.parent().addClass("favorite");
+			getObjByAttr("id", thisImage.attr("id")).fav = true;
+			copyProduct(getObjByAttr("id", thisImage.attr("id")), $("#content_fav"));
+		} else {
+			$(elem).removeClass("selected");
+			thisImage.parent().removeClass("favorite");
+			getObjByAttr("id", thisImage.attr("id")).fav = false;
+			copyProduct(null, $("#content_fav"));
+		}
+	} else {
+		console.log("copia.");
+		if($("#" + thisImage.attr("id")).hasClass("dressed")) {
+			var trueFav = $("[elemid='" + thisImage.attr("id") + "']").parent().find(".fav");
+		} else {
+			var trueFav = $("#" + thisImage.attr("id")).parent().find(".fav");
+		}
+		trueFav.click();			
+	}
 }
 
 function initialize(callback) {

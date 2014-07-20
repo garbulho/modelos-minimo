@@ -208,7 +208,7 @@ html {
 .containerContent, .pages {
 	position: absolute;
 	top: 35px;
-	height: 440px;
+	height: 440px !important;
 	z-index: 0;
 }
 
@@ -239,6 +239,9 @@ html {
 		margin-bottom: 13px;
 		text-align: center;
 		padding: 5px;
+	}
+	.catElements li.favorite {
+		box-shadow: inset 0 0 5px #ffcc00;;
 	}
 	.catElements li.disabled {
 		border: 3px solid #000;
