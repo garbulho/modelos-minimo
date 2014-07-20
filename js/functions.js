@@ -443,6 +443,9 @@ function favThis(elem) {
 		getObjByAttr("id", prodSelector)[0].fav = false;
 	}
 	postContent(globalElements);	
+	if ($("li.active").attr("id") === "favorite") {
+		filterContent("favorite");
+	}
 }
 
 function initialize(callback) {
