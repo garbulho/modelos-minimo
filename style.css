@@ -205,11 +205,13 @@ html {
 		border-bottom: 1px solid white !important;
 	}
 
-.containerContent, .pages {
+.containerContent {
 	position: absolute;
 	top: 35px;
 	height: 440px !important;
 	z-index: 0;
+	overflow: hidden;
+	padding: 10px;
 }
 
 .category {

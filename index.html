@@ -24,9 +24,9 @@
                     <input type="submit" value=">" class="btnBlack">
                 </form>
                 <ul class="menu fullWidth">
-                    <li auxid="content_recent" onclick='changePage(this)'>Recentemente usado</li>
-                    <li auxid="content_recomended" onclick='changePage(this)'>Recomendado para você</li>
-                    <li auxid="content_fav" onclick='changePage(this)'>Favoritos</li>
+                    <li id="recent" onclick='changeTab(this)'>Recentemente usado</li>
+                    <li id="recomended" onclick='changeTab(this)'>Recomendado para você</li>
+                    <li id="favorite" onclick='changeTab(this)'>Favoritos</li>
                 </ul>
                 <ul class="searchResults fullWidth borderTop">
                     Resultados da Busca
@@ -46,18 +46,15 @@
 
     <script>
         $(document).ready(function() {
-            createObject();
-            createPagesContent();
             createElementContainer($("#elements"), function() {
-                $(".containerContent li").each(function(i, e) {
-                    createElements(e);
-                });
+                createBtnsCat($(".containerContent"), $(globalElements));
                 fixColors($(".containerMenu"));
             });
             vAlign($(".vAlign"));
-            $(".containerMenu li").eq(0).click();
+            setLabels($(".roupas").parent());
             initialize(function() {
                 $(".toSelect").click();
+                $(".containerMenu li").eq(0).click();
             });
         });
         $(window).resize(function() {

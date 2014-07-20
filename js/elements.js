@@ -329,16 +329,118 @@ globalElements = {
 };
 
 recent = [
-			{"id": "calcinha_00"},
-			{"id": "soutien_00"},
-			{"id": "calca_00"},
-			{"id": "saia_00"},
-			{"id": "maio_01"}
-	     ];
+			{
+				"title": "Soutien 00",
+				"id": "soutien_00",
+				"type": "soutien",
+				"position": {
+					"top": 132,
+					"left": 188 
+				},
+				"layer": 3,
+				"marca": "",
+				"isDressed": false,
+				"fav": false,
+				"category": "roupas"
+			},
+			{
+				"title": "Calça 00",
+				"id": "calca_00",
+				"type": "bottom",
+				"position": {
+					"top": 235,
+					"left": 177 
+				},
+				"layer": 5,
+				"marca": "",
+				"isDressed": true,
+				"fav": false,
+				"category": "roupas"
+			},
+			{
+				"title": "Saia 00",
+				"id": "saia_00",
+				"type": "bottom",
+				"position": {
+					"top": 224,
+					"left": 166 
+				},
+				"layer": 5,
+				"marca": "",
+				"isDressed": false,
+				"fav": false,
+				"category": "roupas"
+			},
+			{
+				"title": "Saia 01",
+				"id": "saia_01",
+				"type": "bottom",
+				"position": {
+					"top": 224,
+					"left": 166 
+				},
+				"layer": 5,
+				"marca": "",
+				"isDressed": false,
+				"fav": false,
+				"category": "roupas"
+			}
+];
 recomended = [
-			{"id": "colar_00"},
-			{"id": "colar_01"},
-			{"id": "maio_00"},
-			{"id": "maio_01"},
-			{"id": "sapato_00"},
-			]
+			{
+				"title": "Saia 02",
+				"id": "saia_02",
+				"type": "bottom",
+				"position": {
+					"top": 224,
+					"left": 166 
+				},
+				"layer": 5,
+				"marca": "",
+				"isDressed": false,
+				"fav": false,
+				"category": "roupas"
+			},
+			{
+				"title": "Camiseta 00",
+				"id": "camiseta_00",
+				"type": "top",
+				"position": {
+					"top": 127,
+					"left": 158 
+				},
+				"layer": 6,
+				"marca": "",
+				"isDressed": true,
+				"fav": false,
+				"category": "roupas"
+			},
+			{
+				"title": "Camiseta 01",
+				"id": "camiseta_01",
+				"type": "top",
+				"position": {
+					"top": 127,
+					"left": 158 
+				},
+				"layer": 6,
+				"marca": "",
+				"isDressed": false,
+				"fav": false,
+				"category": "roupas"
+			},
+			{
+				"title": "Camiseta 02",
+				"id": "camiseta_02",
+				"type": "top",
+				"position": {
+					"top": 127,
+					"left": 158 
+				},
+				"layer": 6,
+				"marca": "",
+				"isDressed": false,
+				"fav": false,
+				"category": "roupas"
+			}
+]

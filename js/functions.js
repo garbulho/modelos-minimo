@@ -74,17 +74,14 @@ function postContent(contentObj, type) {
 
 function createElementContainer(container, callback) {
 	var tabs = $("<ul class='containerMenu fullWidth'></ul>");
-	var content = $("<ul class='containerContent fullWidth'></ul>");
+	var content = $("<div class='containerContent fullWidth'></ul>");
 	
 	for (a in Object.keys(globalElements)) {
 		var name = Object.keys(globalElements)[a];
 
-		var thisTab = "<li onclick='changeTab(this)'>"
+		var thisTab = "<li onclick='changeTab(this)' id='" + name + "'>"
 		    thisTab += name + "</li>";
 		tabs.append($(thisTab));
-
-		var thisContent = "<li id='content_" + name + "' class='category'></li>";
-		content.append($(thisContent));	
 	}
 
 	$(tabs).children().addClass("rCTop uC smallText border");
@@ -97,96 +94,45 @@ function createElementContainer(container, callback) {
 	}
 }
 
-function copyProduct(product, destination) {
-	var type = $(destination).attr("id").substr(8);
-	var content = [];
-	var listId = getContent(type);
-	//pega os elementos ja existentes
-	if (type === "recent") {
-		for (var i = 0; i < listId.length; i++) {
-			content.push(getObjByAttr("id", listId[i]["id"]));
-		}
-	} else if (type === "fav") {
-		for (var i = 0; i < Object.keys(globalElements).length; i++) {
-			var category = Object.keys(globalElements)[i];
-			$.grep(globalElements[category], function(j){
-				if (j["fav"] === true) {
-					content.push(j);
-				}
-			});
-		}
-	} else if (content === undefined) {
-		content = [];
-	};
-
-	//adiciona o novo
-	if (content.length > 0 && product !== [] && product !== null) {
-		for (var i = 0; i < content.length; i++) { //remove repetidos
-			if (content[i].id === product.id) {
-				content.splice(i,1);
-			}
-		}
-		if (content.length >= 11) {
-			content.splice(11,1);
-		}
-		content.splice(0,0,product);
-	} else if (product !== [] && product !== null) {
-		content.push(product);
-	}
-	
-	//atualiza objetos
-	if (type !== "fav") {
-		postContent(content, type);
-	} else {
-		postContent(globalElements);
-	}
-	
-	//cria
-	createBtnsCat(destination, content);
-}
-
 function createBtnsCat(parent, list) {
 	if ($(parent).children($(".catElements")).length > 0) {
 		$(parent).children($(".catElements")).remove();
 	}
 	var ulElements = $("<ul class='catElements fLeft'></ul>");
-	var category = $(parent).attr("id").substr(8);
+	
+	for (var i = 0; i < Object.keys(globalElements).length; i++) {
+		var category = Object.keys(globalElements)[i];
+		createCards(ulElements, globalElements[category]);
+	}
 
-	$(list).each(function(i, e) {
+	$(parent).append(ulElements);
+}
 
-		var thisElem = $("<li class='bShadowLight rCSmall border fLeft' ondrag='dragIt(event, this)' onclick='selectProd(this)' draggable=true></li>");
+function createCards(ulElements, list) {
+	for(var i = 0; i < list.length; i++) {
 
-		var thisImg = $("<img class='draggable " + e.category + "' ondrag='dragIt(event, this)' src='images/" + e.id + ".png'>");
-		    thisImg.attr("title", e.title);
-		    thisImg.attr("type", e.type);
+		var thisElem = $("<li class='bShadowLight rCSmall border fLeft' ondrag='dragIt(event, this)' onclick='selectProd(this)' draggable=true></li>")
+		            .addClass(list[i].category);
+		var thisImg = $("<img class='draggable " + list[i].category + "' ondrag='dragIt(event, this)' src='images/" + list[i].id + ".png'>")
+		           .attr("title", list[i].title)
+		           .attr("type", list[i].type)
+		           .attr("id", list[i].id);
 
 		var thisFav = $("<label class='fav' onclick='favThis(this)'></label>");
 
-		//nao categorias-copia
-		if (category !== "recent" && category !== "fav" && category !== "recomended") {
-			thisImg.attr("id", e.id);	
-			if (e.isDressed) {
-				thisElem.addClass("toSelect");
-			}
-		} else {
-			thisImg.attr("copyid", e.id);
-			thisImg.addClass("copy");
-			if (e.isDressed) {
-				thisElem.addClass("disabled");
-			}
-		}
-		if (e.fav === true) { //AQUI
-			console.log("FAV");
+		if (list[i].isDressed) {
+			thisElem.addClass("toSelect");
+		} 
+		if (list[i].fav === true) {
 			thisElem.addClass("favorite");
 			thisFav.addClass("selected");
 		}
 
-		//cria labels para roupas
 		if (thisImg.hasClass("roupas")) {
 			var thisLabel = $("<div class='label fullWidth'></div>");
-		    thisLabel.append("<h3>" + e.title + "</h3>");
-			if (e.marca !== "" && e.marca !== undefined && e.marca !== null) {
-				thisLabel.append("<h4>" + e.marca + "</h4>");
+		    thisLabel.append("<h3>" + list[i].title + "</h3>");
+			if (list[i].marca !== "" && list[i].marca !== undefined && list[i].marca !== null) {
+				thisLabel.append("<h4>" + list[i].marca + "</h4>");
 			} else {
 				thisLabel.append("<h4>Marca não definida</h4>");
 			}
@@ -196,34 +142,23 @@ function createBtnsCat(parent, list) {
 		}
 
 		//seta posição
-		if (e.position !== "" && e.position !== undefined && e.position !== null) {
-			thisImg.css("top", e.position.top)
-			       .css("left", e.position.left);
+		if (list[i].position !== "" && list[i].position !== undefined && list[i].position !== null) {
+			thisImg.css("top", list[i].position.top)
+			       .css("left", list[i].position.left);
 		}
-		if (e.layer !== "" && e.layer !== undefined && e.layer !== null) {
-			thisImg.css("z-index", e.layer);
+		if (list[i].layer !== "" && list[i].layer !== undefined && list[i].layer !== null) {
+			thisImg.css("z-index", list[i].layer);
 		}
 
 		//appends
 		ulElements.append(thisElem);
 		$(thisLabel).append(thisFav);
 		thisElem.append(thisImg, thisLabel);
-	});
 
-	$(parent).append(ulElements);
 	$(ulElements).children("li:nth-child(3n)").css("margin-right", 0);
-	if ($(ulElements).children().length > 12) {
-		scrollPages($(parent), list);
-	}
-
-	setLabels($(".roupas").parent());
+	
 	centerImg($(".catElements li"));
-}
-
-function createElements(objectElem) {
-	var category = $(objectElem).attr("id").substr(8);
-
-	createBtnsCat($(objectElem), $(globalElements[category]));
+	}
 }
 
 function setLabels(elemList) {
@@ -308,26 +243,20 @@ function fixColors(elemList) {
 }
 
 function changeTab(tab) {
-	$(".containerContent").show();
-	$(".pages").hide();
 	$(".menu li.selected").removeClass("selected");
-	$(".pages li.active").removeClass("selected");
-	$(".pages li").eq($(tab).index()).removeClass("active");
 	$(".containerMenu li.active").removeClass("active");
-	$(".containerContent li.active").removeClass("active");
 	$(tab).addClass("active");
-	$(".containerContent>li").eq($(tab).index()).addClass("active");
+
+	console.log(tab);
+
+	filterContent($(tab).attr("id"));
 }
 
-function changePage(btnClicked) {
-	$(".containerContent").hide();
-	$(".pages").show();
-	$(".menu li.selected").removeClass("selected");
-	$(".pages li.selected").removeClass("selected");
-	$(".containerMenu li.active").removeClass("active");
-	$(".containerContent li.active").removeClass("active");
-	$(".pages>li").eq($(btnClicked).index()).addClass("selected");
-	$(btnClicked).addClass("selected");
+function filterContent(filter) {
+	var results = $(".containerContent").find("li." + filter);
+	var rest = $(".containerContent").find("li").not("." + filter);
+	results.show();
+	rest.hide();
 }
 
 function createPagesContent() {
@@ -403,16 +332,16 @@ function setDressedPieces(parent) {
 }
 
 function getObjByAttr(attr, value) {
-	var theObject;
+	var theObjects = [];
 	for (var i = 0; i < Object.keys(globalElements).length; i++) {
 		var category = Object.keys(globalElements)[i];
 		$.grep(globalElements[category], function(j){
 			if (j[attr] === value) {
-				theObject = j;
+				theObjects.push(j);
 			}
 		});
 	}
-	return theObject;
+	return theObjects;
 }
 
 function dressIt(elem) {
@@ -433,8 +362,6 @@ function dressIt(elem) {
 	setDressedPieces($("#canvas"));
 
 	getObjByAttr("id", $(elem).attr("id")).isDressed = true;
-
-	copyProduct(getObjByAttr("id", $(elem).attr("id")), $("#content_recent"));
 
 	selectIt($(elem).parent());
 }
@@ -479,37 +406,25 @@ function favThis(elem) {
 			$(elem).addClass("selected");
 			thisImage.parent().addClass("favorite");
 			getObjByAttr("id", thisImage.attr("id")).fav = true;
-			copyProduct(getObjByAttr("id", thisImage.attr("id")), $("#content_fav"));
 		} else {
 			$(elem).removeClass("selected");
 			thisImage.parent().removeClass("favorite");
 			getObjByAttr("id", thisImage.attr("id")).fav = false;
-			copyProduct(null, $("#content_fav"));
 		}
 	} else {
-		console.log("copia.");
 		if($("#" + thisImage.attr("id")).hasClass("dressed")) {
-			var trueFav = $("[elemid='" + thisImage.attr("id") + "']").parent().find(".fav");
-		} else {
-			var trueFav = $("#" + thisImage.attr("id")).parent().find(".fav");
+			$("[elemid='" + thisImage.attr("id") + "']").sib
 		}
-		trueFav.click();			
 	}
 }
 
 function initialize(callback) {
-	var recomended = [];
-	for (var i = 0; i < getContent("recomended").length; i++) {
-		recomended.push(getObjByAttr("id", getContent("recomended")[i]["id"]));
+	for (i in recent) {
+		$("#" + recent[i].id).parent().addClass("recent");
 	}
-	var recent = [];
-	for (var i = 0; i < getContent("recent").length; i++) {
-		recent.push(getObjByAttr("id", getContent("recent")[i]["id"]));
+	for (i in recomended) {
+		$("#" + recomended[i].id).parent().addClass("recomended");
 	}
-
-	createBtnsCat($("#content_recomended"), recomended);
-	createBtnsCat($("#content_recent"), recent);
-
 	if (callback) {
 		callback();
 	}
