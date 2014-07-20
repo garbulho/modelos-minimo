@@ -154,8 +154,6 @@ function createCards(ulElements, list) {
 		ulElements.append(thisElem);
 		$(thisLabel).append(thisFav);
 		thisElem.append(thisImg, thisLabel);
-	
-	centerImg($(".catElements li"));
 	}
 }
 
@@ -193,6 +191,7 @@ function setLabels(elemList) {
 function centerImg(elemList) {
 	$(elemList).each(function(i, e) {
 		var img = $(e).find("img");
+		console.log(img);
 		var auxImg = $("<img/>");
 		auxImg.attr("src", img.attr("src"));
 		auxImg.load(function() {
