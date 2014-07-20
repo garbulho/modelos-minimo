@@ -58,13 +58,19 @@ function postContent(contentObj, type) {
 	        console.error("postContent");
 	    }
 	});*/
+//console.log(recent);
+//console.log(contentObj);
 	if (type === "recomended") {
+		console.log("recomended");
 		recomended = contentObj;
 	} else if (type === "recent") {
-		dressed = contentObj;
+		console.log("recent");
+		recent = contentObj;
 	} else {
+		console.log("uoutros");
 		globalElements = contentObj;
 	}
+	console.log(recent);
 }
 
 function dressIt(elem) {
@@ -146,19 +152,15 @@ function copyProduct(product, destination) {
 
 	var duplicate = false;
 	for (var i = 0; i < content.length; i++) {
-		if (content[i].id === $(product).attr("id")) {
+		if (content[i].id === product.id) {
 			duplicate = true;
 		}
 	}
-	/*if (!duplicate) {
-		content.push(product);	
+	if (!duplicate) {
+		content.push(product);
 		postContent(content, type);
-		postContent(.push(product.attr("id")), type);
 		createBtnsCat(destination, content);
-	}*/
-	content.push(product);
-	postContent(content, type);
-	createBtnsCat(destination, content);
+	}
 }
 
 function createBtnsCat(parent, list) {
@@ -173,8 +175,12 @@ function createBtnsCat(parent, list) {
 		var thisImg = $("<img id='" + e.id + "' class='draggable " + category + "' ondrag='dragIt(event, this)' onclick='selectProd(this)' src='images/" + e.id + ".png'>");
 		    thisImg.attr("title", e.title);
 		    thisImg.attr("type", e.type);
-
-		if (category === "roupas") {
+		
+		if (e.elemid !== "" && e.elemid !== undefined && e.elemid !== null) {
+			thisImg.attr("elemid", e.elemid);
+		}
+		
+		if (thisImg.hasClass("roupas")) {
 			var thisLabel = $("<div class='label fullWidth'></div>");
 		    thisLabel.append("<h3>" + e.title + "</h3>");
 			if (e.marca !== "" && e.marca !== undefined && e.marca !== null) {
@@ -186,9 +192,6 @@ function createBtnsCat(parent, list) {
                      .css('user-select', 'none')
                      .on('selectstart', false);
 		}
-		$(parent).append(ulElements);
-		ulElements.append(thisElem);
-		thisElem.append(thisImg, thisLabel);
 
 		if (e.position !== "" && e.position !== undefined && e.position !== null) {
 			thisImg.css("top", e.position.top)
@@ -200,7 +203,11 @@ function createBtnsCat(parent, list) {
 		if (e.isDressed) {
 			thisElem.addClass("toSelect");
 		}
+
+		ulElements.append(thisElem);
+		thisElem.append(thisImg, thisLabel);
 	});
+
 	$(parent).append(ulElements);
 	$(ulElements).children("li:nth-child(3n)").css("margin-right", 0);
 	if ($(ulElements).children().length >= 12) {
@@ -460,10 +467,6 @@ function initialize() {
 		$("[type='soutien']").eq(0).parent().click();
 		$("[type='shadow']").eq(0).parent().click();	
 	*/
-	var recent = [];
-	for (var i = 0; i < getContent("recent").length; i++) {
-		recent.push(getObjByAttr("id", getContent("recent")[i]["id"]));
-	}
 
 	var recomended = [];
 	for (var i = 0; i < getContent("recomended").length; i++) {
