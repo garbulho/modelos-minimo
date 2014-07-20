@@ -241,8 +241,8 @@ function fixColors(elemList) {
 }
 
 function changeTab(tab) {
-	$(".menu li.selected").removeClass("selected");
-	$(".containerMenu li.active").removeClass("active");
+	$(".menu li").removeClass("active");
+	$(".containerMenu li").removeClass("active");
 	$(tab).addClass("active");
 
 	console.log(tab);
@@ -256,7 +256,7 @@ function filterContent(filter) {
 	results.show();
 	rest.hide();
 
-	if (results.length > 12) {
+	if (results.length > 12 && $("li.active").attr("id") !== "recent") {
 		scrollPages($(".containerContent"), results);
 	} else {
 		$(".controller").remove();
@@ -315,7 +315,10 @@ function dropIt(event, area) {
 }
 
 function selectIt(elem) {
+	$(elem).addClass("recent");
+
 	$(elem).addClass("disabled");
+
 	$("[copyid='" + $(elem).children().attr("id") + "']").parent().addClass("disabled");
 	$(elem).children("img").attr("elemId", $(elem).children().attr("id"))
 		              .removeAttr("id");
@@ -359,6 +362,8 @@ function dressIt(elem) {
 
 	getObjByAttr("id", $(dressed).attr("id"))[0].isDressed = true;
 	postContent(globalElements);
+
+	setRecent(elem);
 }
 
 function undressIt(elem) {
@@ -382,6 +387,42 @@ function selectProd(elem) {
 			dressIt($(elem).children());
 		}
 	}
+}
+
+function setRecent(elem) {
+	var recentList = recent;
+	if (elem.length > 1) {
+		for (a in elem) {
+			if (elem[a].tagName === "IMG") {
+				imgElem = elem;
+			}
+		}
+	} else {
+		imgElem = elem;
+	}
+	if (imgElem.parent().hasClass("disabled")) {
+		console.log(imgElem.attr("elemid"));
+		var objectElem = getObjByAttr("id", imgElem.attr("elemid"))[0];
+	} else {
+		console.log(imgElem.attr("id"));
+		var objectElem = getObjByAttr("id", imgElem.attr("id"))[0];
+	}
+
+	if (recentList.length > 11) {
+		var old = recentList.splice(11,1);
+	}
+	recentList.splice(0,0,objectElem);
+
+	$(".recent").removeClass("recent");
+	for (var i = 0; i < recentList.length; i++) {
+		var recentObj = $("#" + recentList[i].id);
+		if (recentObj.parent().attr("id") === "canvas") {
+			recentObj = $("[elemid='" + recentList[i].id + "']");
+		}
+		recentObj.parent().addClass("recent");
+	}
+
+	postContent(recentList, "recent");
 }
 
 function favThis(elem) {

@@ -320,7 +320,7 @@ html {
 		background: #aaa;
 		color: white;
 	}
-	.menu li.selected {
+	.menu li.active {
 		background: #333;
 		color: white;
 	}
