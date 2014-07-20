@@ -154,8 +154,6 @@ function createCards(ulElements, list) {
 		ulElements.append(thisElem);
 		$(thisLabel).append(thisFav);
 		thisElem.append(thisImg, thisLabel);
-
-	$(ulElements).children("li:nth-child(3n)").css("margin-right", 0);
 	
 	centerImg($(".catElements li"));
 	}
@@ -257,6 +255,15 @@ function filterContent(filter) {
 	var rest = $(".containerContent").find("li").not("." + filter);
 	results.show();
 	rest.hide();
+
+	if (results.length > 12) {
+		scrollPages($(".containerContent"), results);
+	} else {
+		$(".controller").remove();
+		$(".catElements").css("top", 10);
+	}
+
+	$(results).children("li:nth-child(3n)").css("margin-right", 0);
 }
 
 function createPagesContent() {
@@ -283,7 +290,7 @@ function scrollPages(parent, list) {
 }
 
 function scrollThis(elem) {
-	var catElements = $(elem).parents(".category").find(".catElements");
+	var catElements = $(elem).parents(".containerContent").find(".catElements");
 	if ($(elem).hasClass("page")) {
 		var page = parseInt($(elem).html()) - 1;
 		catElements.animate({
@@ -320,17 +327,6 @@ function unselectIt(elem) {
 		   .removeAttr("elemId");
 }
 
-function setDressedPieces(parent) {
-	var dressed = [];
-	$(parent).find(".dressed").each(function(i, e) {
-		var prodId = $(e).attr("id");
-		if (getObjByAttr("id", prodId).length > 0) {
-			dressed.push(getObjByAttr("id", prodId));
-		}
-	});
-	//postContent(dressed, "dressed");
-}
-
 function getObjByAttr(attr, value) {
 	var theObjects = [];
 	for (var i = 0; i < Object.keys(globalElements).length; i++) {
@@ -359,40 +355,31 @@ function dressIt(elem) {
 	//Gambiarra para concertar um erro esquisito
 	$("#canvas").find(".label").remove();
 
-	setDressedPieces($("#canvas"));
-
-	getObjByAttr("id", $(elem).attr("id")).isDressed = true;
-
 	selectIt($(elem).parent());
+
+	getObjByAttr("id", $(dressed).attr("id"))[0].isDressed = true;
+	postContent(globalElements);
 }
 
 function undressIt(elem) {
 	unselectIt($("[elemId='" + $(elem).attr("id") + "']"));
 	unselectIt($("[copyid='" + $(elem).attr("id") + "']"));
+	
 	$(elem).remove();
-	setDressedPieces($("#canvas"));
-	getObjByAttr("id", $(elem).attr("id")).isDressed = false;
+
+	getObjByAttr("id", $(elem).attr("id"))[0].isDressed = false;
 	postContent(globalElements);
 }
 
 function selectProd(elem) {
-	if ($(elem).find(".copy").length > 0) {
-		if($("#" + $(elem).find(".copy").attr("copyid")).parent().attr("id") === "canvas") {
-			$("#" + $(elem).find(".copy").attr("copyid")).click();
-		} else {
-			$("#" + $(elem).find(".copy").attr("copyid")).parent().click();
-		}
-		//console.log($("#" + $(elem).find(".copy").attr("copyid")));
+	if ($(elem).parent().attr("id") === "canvas") {
+		undressIt($(elem));
 	} else {
-		if ($(elem).parent().attr("id") === "canvas") {
-			undressIt($(elem));
+		if ($(elem).hasClass("disabled")) {
+			var dressed = $("#" + $(elem).children().attr("elemid"));
+			undressIt(dressed);
 		} else {
-			if ($(elem).hasClass("disabled")) {
-				var dressed = $("#" + $(elem).children().attr("elemid"));
-				undressIt(dressed);
-			} else {
-				dressIt($(elem).children());
-			}
+			dressIt($(elem).children());
 		}
 	}
 }
@@ -400,22 +387,22 @@ function selectProd(elem) {
 function favThis(elem) {
 	event.stopPropagation();
 	var thisImage = $(elem).parent().siblings("img");
-
-	if (!thisImage.hasClass("copy")) {
-		if (!$(elem).hasClass("selected")) {
-			$(elem).addClass("selected");
-			thisImage.parent().addClass("favorite");
-			getObjByAttr("id", thisImage.attr("id")).fav = true;
-		} else {
-			$(elem).removeClass("selected");
-			thisImage.parent().removeClass("favorite");
-			getObjByAttr("id", thisImage.attr("id")).fav = false;
-		}
+	var prodSelector;
+	if (!thisImage.parent().hasClass("disabled")) {
+		prodSelector = thisImage.attr("id")
 	} else {
-		if($("#" + thisImage.attr("id")).hasClass("dressed")) {
-			$("[elemid='" + thisImage.attr("id") + "']").sib
-		}
+		prodSelector = thisImage.attr("elemid")
 	}
+	if (!$(elem).hasClass("selected")) {
+		$(elem).addClass("selected");
+		thisImage.parent().addClass("favorite");
+		getObjByAttr("id", prodSelector)[0].fav = true;
+	} else {
+		$(elem).removeClass("selected");
+		thisImage.parent().removeClass("favorite");
+		getObjByAttr("id", prodSelector)[0].fav = false;
+	}
+	postContent(globalElements);	
 }
 
 function initialize(callback) {

@@ -206,7 +206,7 @@ html {
 	}
 
 .containerContent {
-	position: absolute;
+	position: relative;
 	top: 35px;
 	height: 440px !important;
 	z-index: 0;
