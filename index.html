@@ -56,7 +56,9 @@
             });
             vAlign($(".vAlign"));
             $(".containerMenu li").eq(0).click();
-            initialize();
+            initialize(function() {
+                $(".toSelect").click();
+            });
         });
         $(window).resize(function() {
             vAlign($(".vAlign"));

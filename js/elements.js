@@ -19,8 +19,9 @@ globalElements = {
 			},
 			"layer": 3,
 			"marca": "",
-			"isDressed": true,
-			"fav": false
+			"isDressed": false,
+			"fav": true,
+			"category": "roupas"
 		},
 		{
 			"title": "Soutien 00",
@@ -32,8 +33,9 @@ globalElements = {
 			},
 			"layer": 3,
 			"marca": "",
-			"isDressed": true,
-			"fav": false
+			"isDressed": false,
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Calça 00",
@@ -45,8 +47,9 @@ globalElements = {
 			},
 			"layer": 5,
 			"marca": "",
-			"isDressed": false,
-			"fav": false
+			"isDressed": true,
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Saia 00",
@@ -59,7 +62,8 @@ globalElements = {
 			"layer": 5,
 			"marca": "",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Saia 01",
@@ -72,7 +76,8 @@ globalElements = {
 			"layer": 5,
 			"marca": "",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Saia 02",
@@ -85,7 +90,8 @@ globalElements = {
 			"layer": 5,
 			"marca": "",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Camiseta 00",
@@ -97,8 +103,9 @@ globalElements = {
 			},
 			"layer": 6,
 			"marca": "",
-			"isDressed": false,
-			"fav": false
+			"isDressed": true,
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Camiseta 01",
@@ -111,7 +118,8 @@ globalElements = {
 			"layer": 6,
 			"marca": "",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Camiseta 02",
@@ -124,7 +132,8 @@ globalElements = {
 			"layer": 6,
 			"marca": "",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Camiseta 03",
@@ -137,7 +146,8 @@ globalElements = {
 			"layer": 6,
 			"marca": "",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Camiseta 04",
@@ -150,7 +160,8 @@ globalElements = {
 			"layer": 6,
 			"marca": "",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Camiseta 05",
@@ -163,7 +174,8 @@ globalElements = {
 			"layer": 6,
 			"marca": "",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Colar 00",
@@ -176,7 +188,8 @@ globalElements = {
 			"layer": 7,
 			"marca": "",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Colar 01",
@@ -189,7 +202,8 @@ globalElements = {
 			"layer": 7,
 			"marca": "",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Maiô 00",
@@ -202,7 +216,8 @@ globalElements = {
 			"layer": 3,
 			"marca": "",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Maiô 01",
@@ -215,7 +230,8 @@ globalElements = {
 			"layer": 3,
 			"marca": "",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "roupas"
 		},
 		{
 			"title": "Sapato 00",
@@ -227,8 +243,9 @@ globalElements = {
 			},
 			"layer": 4,
 			"marca": "",
-			"isDressed": false,
-			"fav": false
+			"isDressed": true,
+			"fav": false,
+			"category": "roupas"
 		}
 	],
 	"modelo": [
@@ -240,7 +257,8 @@ globalElements = {
 				"left": 0 
 			},
 			"isDressed": true,
-			"fav": false
+			"fav": false,
+			"category": "modelo"
 		},
 		{
 			"id": "modelo_01",
@@ -250,7 +268,8 @@ globalElements = {
 				"left": 0 
 			},
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "modelo"
 		}
 	],
 	"fundo": [ 
@@ -259,21 +278,24 @@ globalElements = {
 			"type": "background",
 			"title": "Background A",
 			"isDressed": true,
-			"fav": false
+			"fav": false,
+			"category": "fundo"
 		},
 		{
 			"id": "background_01",
 			"type": "background",
 			"title": "Background B",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "fundo"
 		},
 		{
 			"id": "background_02",
 			"type": "background",
 			"title": "Background C",
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "fundo"
 		}
 	],
 	"efeitos": [
@@ -287,7 +309,8 @@ globalElements = {
 			},
 			"layer": 1,
 			"isDressed": false,
-			"fav": false
+			"fav": false,
+			"category": "efeitos"
 		},
 		{
 			"id": "sombra_01",
@@ -297,7 +320,10 @@ globalElements = {
 				"top": 485,
 				"left": 105 
 			},
-			"layer": 1
+			"layer": 1,
+			"isDressed": false,
+			"fav": false,
+			"category": "efeitos"
 		}
 	]
 };
@@ -307,6 +333,7 @@ recent = [
 			{"id": "soutien_00"},
 			{"id": "calca_00"},
 			{"id": "saia_00"},
+			{"id": "maio_01"}
 	     ];
 recomended = [
 			{"id": "colar_00"},

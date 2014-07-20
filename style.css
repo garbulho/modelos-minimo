@@ -361,3 +361,23 @@ html {
 .modelo {
 	z-index: 2
 }
+
+.fav {
+	width: 18px;
+	height: 18px;
+	background: url(images/favProd.png);
+	position: absolute;
+	top: -25px;
+	right: 5px;
+	cursor: pointer;
+	opacity: 0.4;
+}
+
+.fav:hover {
+	opacity: 0.8;
+}
+
+.fav.selected {
+	opacity: 1;
+	background: url(images/favProd_s.png);
+}

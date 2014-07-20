@@ -25,7 +25,7 @@ function getContent(type) {
 		return jsContent;
 	});*/
 	var objects;
-	if (type === "dressed") {
+	if (type === "dressed" || type == "fav") {
 		objects = globalElements;
 	} else if (type === "recomended") {
 		objects = recomended;
@@ -67,47 +67,9 @@ function postContent(contentObj, type) {
 		console.log("recent");
 		recent = contentObj;
 	} else {
-		console.log("uoutros");
+		console.log("outros");
 		globalElements = contentObj;
 	}
-	console.log(recent);
-}
-
-function dressIt(elem) {
-	var dressed = $(elem).clone();
-	var type = $(dressed).attr("type");
-	var sameItem = $("#canvas").find("[type='" + type + "']");
-	$(dressed).addClass("dressed");
-	if (sameItem.length > 0) {
-		undressIt(sameItem);
-	}
-	$("#canvas").append($(dressed));
-	//Gambiarra para concertar um erro esquisito
-	$("#canvas").find(".label").remove();
-	setDressedPieces($("#canvas"));
-
-	getObjByAttr("id", $(elem).attr("id")).isDressed = true;
-	copyProduct(getObjByAttr("id", $(elem).attr("id")), $("#content_recent"));
-}
-
-function vAlign(elements) {
-	$(elements).each(function(i, e) {
-		//Gambiarra para nao dar erro com a altura
-		//html e body com height = 100% nao funciona bem
-		if (e.parentNode.tagName == "BODY") {
-			var parentH = $(window).height();
-		} else {
-			var parentH = $(e).parent().height();
-		}
-
-		var thisH = $(e).outerHeight(true);
-		var margin = (parentH - thisH)/2;
-		if (margin < 0) {
-			margin = 0;
-		}
-
-		$(e).css("margin-top", margin);
-	});
 }
 
 function createElementContainer(container, callback) {
@@ -138,29 +100,49 @@ function createElementContainer(container, callback) {
 function copyProduct(product, destination) {
 	var type = $(destination).attr("id").substr(8);
 	var content = [];
-	var listId = getContent("recent");
+	var listId = getContent(type);
+	//pega os elementos ja existentes
 	if (type === "recent") {
 		for (var i = 0; i < listId.length; i++) {
 			content.push(getObjByAttr("id", listId[i]["id"]));
 		}
 	} else if (type === "fav") {
-		content = getContent("fav");
-	}
-	if (content === undefined) {
+		for (var i = 0; i < Object.keys(globalElements).length; i++) {
+			var category = Object.keys(globalElements)[i];
+			$.grep(globalElements[category], function(j){
+				if (j["fav"] === true) {
+					content.push(j);
+				}
+			});
+		}
+	} else if (content === undefined) {
 		content = [];
 	};
 
-	var duplicate = false;
-	for (var i = 0; i < content.length; i++) {
-		if (content[i].id === product.id) {
-			duplicate = true;
+	//adiciona o novo
+	if (content.length > 0) {
+		for (var i = 0; i < content.length; i++) { //remove repetidos
+			if (content[i].id === product.id) {
+				content.splice(i,1);
+			}
 		}
-	}
-	if (!duplicate) {
+		if (content.length >= 11) {
+			content.splice(11,1);
+		}
+		content.splice(0,0,product);
+	} else {
 		content.push(product);
-		postContent(content, type);
-		createBtnsCat(destination, content);
 	}
+	
+	//atualiza objetos
+	if (type !== "fav") {
+		postContent(content, type);
+	} else {
+		postContent(globalElements);
+	}
+	
+	//cria
+	createBtnsCat(destination, content);
 }
 
 function createBtnsCat(parent, list) {
@@ -169,17 +151,37 @@ function createBtnsCat(parent, list) {
 	}
 	var ulElements = $("<ul class='catElements fLeft'></ul>");
 	var category = $(parent).attr("id").substr(8);
+
 	$(list).each(function(i, e) {
+
 		var thisElem = $("<li class='bShadowLight rCSmall border fLeft' ondrag='dragIt(event, this)' onclick='selectProd(this)' draggable=true></li>");
 
-		var thisImg = $("<img id='" + e.id + "' class='draggable " + category + "' ondrag='dragIt(event, this)' onclick='selectProd(this)' src='images/" + e.id + ".png'>");
+		var thisImg = $("<img class='draggable " + e.category + "' ondrag='dragIt(event, this)' src='images/" + e.id + ".png'>");
 		    thisImg.attr("title", e.title);
 		    thisImg.attr("type", e.type);
-		
-		if (e.elemid !== "" && e.elemid !== undefined && e.elemid !== null) {
-			thisImg.attr("elemid", e.elemid);
+
+		var thisFav = $("<label class='fav' onclick='favThis(this)'></label>");
+
+		//nao categorias-copia
+		if (category !== "recent" && category !== "fav" && category !== "recomended") {
+			thisImg.attr("id", e.id);	
+			if (e.isDressed) {
+				thisElem.addClass("toSelect");
+			}
+		} else {
+			thisImg.attr("copyid", e.id);
+			thisImg.addClass("copy");
+			if (e.isDressed) {
+				thisElem.addClass("disabled");
+			}
 		}
-		
+		if (e.fav === true) { //AQUI
+			console.log("FAV");
+			thisElem.addClass("favorite");
+			thisFav.addClass("selected");
+		}
+
+		//cria labels para roupas
 		if (thisImg.hasClass("roupas")) {
 			var thisLabel = $("<div class='label fullWidth'></div>");
 		    thisLabel.append("<h3>" + e.title + "</h3>");
@@ -193,6 +195,7 @@ function createBtnsCat(parent, list) {
                      .on('selectstart', false);
 		}
 
+		//seta posição
 		if (e.position !== "" && e.position !== undefined && e.position !== null) {
 			thisImg.css("top", e.position.top)
 			       .css("left", e.position.left);
@@ -200,71 +203,27 @@ function createBtnsCat(parent, list) {
 		if (e.layer !== "" && e.layer !== undefined && e.layer !== null) {
 			thisImg.css("z-index", e.layer);
 		}
-		if (e.isDressed) {
-			thisElem.addClass("toSelect");
-		}
 
+		//appends
 		ulElements.append(thisElem);
+		$(thisLabel).append(thisFav);
 		thisElem.append(thisImg, thisLabel);
 	});
 
 	$(parent).append(ulElements);
 	$(ulElements).children("li:nth-child(3n)").css("margin-right", 0);
-	if ($(ulElements).children().length >= 12) {
+	if ($(ulElements).children().length > 12) {
 		scrollPages($(parent), list);
 	}
 
-	setLabels($("#content_roupas .catElements li"));
+	setLabels($(".roupas").parent());
 	centerImg($(".catElements li"));
 }
 
 function createElements(objectElem) {
 	var category = $(objectElem).attr("id").substr(8);
 
-	//$(objectElem).append(ulElements);
-
 	createBtnsCat($(objectElem), $(globalElements[category]));
-	
-	/*$(globalElements[category]).each(function(i, e) {
-		var thisElem = $("<li class='bShadowLight rCSmall border fLeft' ondrag='dragIt(event, this)' onclick='selectProd(this)' draggable=true></li>");
-
-		var thisImg = $("<img id='" + e.id + "' class='draggable " + category + "' ondrag='dragIt(event, this)' onclick='selectProd(this)' src='images/" + e.id + ".png'>");
-		    thisImg.attr("title", e.title);
-		    thisImg.attr("type", e.type);
-
-		if (category === "roupas") {
-			var thisLabel = $("<div class='label fullWidth'></div>");
-		    thisLabel.append("<h3>" + e.title + "</h3>");
-			if (e.marca !== "" && e.marca !== undefined && e.marca !== null) {
-				thisLabel.append("<h4>" + e.marca + "</h4>");
-			} else {
-				thisLabel.append("<h4>Marca não definida</h4>");
-			}
-			thisLabel.attr('unselectable', 'on')
-                     .css('user-select', 'none')
-                     .on('selectstart', false);
-		}
-
-		ulElements.append(thisElem);
-		thisElem.append(thisImg, thisLabel);
-
-		if (e.position !== "" && e.position !== undefined && e.position !== null) {
-			thisImg.css("top", e.position.top)
-			       .css("left", e.position.left);
-		}
-		if (e.layer !== "" && e.layer !== undefined && e.layer !== null) {
-			thisImg.css("z-index", e.layer);
-		}
-	});
-	$(objectElem).append(ulElements);
-	$(ulElements).children("li:nth-child(3n)").css("margin-right", 0);
-
-	if ($(globalElements[category]).length >= 12) {
-		scrollPages(objectElem, $(globalElements[category]));
-	}
-
-	setLabels($("#content_roupas .catElements li"));
-	centerImg($(".catElements li"));*/
 }
 
 function setLabels(elemList) {
@@ -276,7 +235,7 @@ function setLabels(elemList) {
 			display: "none"
 		});
 		label.parent().hover(function() {
-			$(this).children('.label').stop(true, true);
+			$(this).children('.label').stop(true, false);
 			$(this).children('.label').css({
 				display: "block",
 				bottom: "-50%"
@@ -305,14 +264,39 @@ function centerImg(elemList) {
 		auxImg.attr("src", img.attr("src"));
 		auxImg.load(function() {
 			if (this.width < $(e).width() && this.height < $(e).height()) {
-				img.addClass("noResize");
-			} else if (this.width > this.height) {
-				img.addClass("horizontal");
+				img.addClass("noResize vAlign");
+				img.css("margin-top", ($(e).height() - this.height)/2);
+			} else if (this.width < this.height) {
+				img.addClass("vertical");
 			} else {
-				img.addClass("vertical")
+				img.addClass("horizontal vAlign");
+				if(($(e).height() - this.height)/2 > 0) {
+					img.css("margin-top", ($(e).height() - this.height)/2);	
+				} else {
+					img.css("margin-top", 0);
+				}
 			}
-			vAlign(img);
 		});
+	});
+}
+
+function vAlign(elements) {
+	$(elements).each(function(i, e) {
+		//Gambiarra para nao dar erro com a altura
+		//html e body com height = 100% nao funciona bem
+		if (e.parentNode.tagName == "BODY") {
+			var parentH = $(window).height();
+		} else {
+			var parentH = $(e).parent().height();
+		}
+
+		var thisH = $(e).outerHeight(true);
+		var margin = (parentH - thisH)/2;
+		if (margin < 0) {
+			margin = 0;
+		}
+
+		$(e).css("margin-top", margin);
 	});
 }
 
@@ -391,18 +375,12 @@ function dragIt(event, elem) {
 
 function dropIt(event, area) {
 	event.preventDefault();
-	if ($(area).attr("id") === "canvas") {
-		if (!$(draggedElem).hasClass("disabled")) {
-			dressIt($(draggedElem).children());
-			selectIt($(draggedElem));
-		}
-	} else if ($(area).attr("id") === "elements" && !$(draggedElem).parent().hasClass("catElements")) {
-		undressIt($(draggedElem));
-	}
+	$(draggedElem).click();
 }
 
 function selectIt(elem) {
 	$(elem).addClass("disabled");
+	$("[copyid='" + $(elem).children().attr("id") + "']").parent().addClass("disabled");
 	$(elem).children("img").attr("elemId", $(elem).children().attr("id"))
 		              .removeAttr("id");
 }
@@ -437,47 +415,85 @@ function getObjByAttr(attr, value) {
 	return theObject;
 }
 
+function dressIt(elem) {
+	var dressed = $(elem).clone();
+	var type = $(dressed).attr("type");
+	var sameItem = $("#canvas").find("[type='" + type + "']");
+
+	$(dressed).addClass("dressed").attr("onclick", "selectProd(this)");
+
+	if (sameItem.length > 0) {
+		undressIt(sameItem);
+	}
+
+	$("#canvas").append($(dressed));
+	//Gambiarra para concertar um erro esquisito
+	$("#canvas").find(".label").remove();
+
+	setDressedPieces($("#canvas"));
+
+	getObjByAttr("id", $(elem).attr("id")).isDressed = true;
+
+	copyProduct(getObjByAttr("id", $(elem).attr("id")), $("#content_recent"));
+
+	selectIt($(elem).parent());
+}
+
 function undressIt(elem) {
 	unselectIt($("[elemId='" + $(elem).attr("id") + "']"));
+	unselectIt($("[copyid='" + $(elem).attr("id") + "']"));
 	$(elem).remove();
 	setDressedPieces($("#canvas"));
-	console.log($(elem));
 	getObjByAttr("id", $(elem).attr("id")).isDressed = false;
 	postContent(globalElements);
 }
 
 function selectProd(elem) {
-	if ($(elem).parent().attr("id") === "canvas") {
-		undressIt($(elem));
-	} else {
-		if ($(elem).hasClass("disabled")) {
-			var dressed = $("#" + $(elem).children().attr("elemid"));
-			undressIt(dressed);
+	if ($(elem).find(".copy").length > 0) {
+		if($("#" + $(elem).find(".copy").attr("copyid")).parent().attr("id") === "canvas") {
+			$("#" + $(elem).find(".copy").attr("copyid")).click();
 		} else {
-			dressIt($(elem).children());
-			selectIt($(elem));
+			$("#" + $(elem).find(".copy").attr("copyid")).parent().click();
+		}
+		//console.log($("#" + $(elem).find(".copy").attr("copyid")));
+	} else {
+		if ($(elem).parent().attr("id") === "canvas") {
+			undressIt($(elem));
+		} else {
+			if ($(elem).hasClass("disabled")) {
+				var dressed = $("#" + $(elem).children().attr("elemid"));
+				undressIt(dressed);
+			} else {
+				dressIt($(elem).children());
+			}
 		}
 	}
 }
 
-function initialize() {
-		/*$("[type='modelo']").eq(0).parent().click();
-		$("[type='background']").eq(0).parent().click();
-		$("[type='panties']").eq(0).parent().click();
-		$("[type='soutien']").eq(0).parent().click();
-		$("[type='shadow']").eq(0).parent().click();	
-	*/
+function favThis(elem) {
+	event.stopPropagation();
+	$(elem).addClass("selected");
+	var thisImage = $(elem).parent().siblings("img");
+	console.log(thisImage.attr("id"));
+	console.log(getObjByAttr("id", thisImage.attr("id")));
+	getObjByAttr("id", thisImage.attr("id")).fav = true;
+	copyProduct(getObjByAttr("id", thisImage.attr("id")), $("#content_fav"));
+}
 
+function initialize(callback) {
 	var recomended = [];
 	for (var i = 0; i < getContent("recomended").length; i++) {
 		recomended.push(getObjByAttr("id", getContent("recomended")[i]["id"]));
 	}
+	var recent = [];
+	for (var i = 0; i < getContent("recent").length; i++) {
+		recent.push(getObjByAttr("id", getContent("recent")[i]["id"]));
+	}
 
-	$(".toSelect").each(function(i, e) {
-		$(e).click();
-		$(e).removeClass("toSelect");
-	});
-
-	createBtnsCat($("#content_recent"), recent);
 	createBtnsCat($("#content_recomended"), recomended);
+	createBtnsCat($("#content_recent"), recent);
+
+	if (callback) {
+		callback();
+	}
 }
