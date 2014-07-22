@@ -41,21 +41,25 @@
     </div>
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    <script type="text/javascript" src="js/elements.js" type="text/javascript"></script>
+    <!--<script type="text/javascript" src="js/elements.js" type="text/javascript"></script>-->
     <script type="text/javascript" src="js/functions.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function() {
-            createElementContainer($("#elements"), function() {
-                createBtnsCat($(".containerContent"), $(globalElements));
-                fixColors($(".containerMenu"));
-            });
-            vAlign($(".vAlign"));
-            setLabels($(".roupas").parent());
-            initialize(function() {
-                $(".toSelect").click();
-                $(".containerMenu li").eq(0).click();
-                centerImg($(".catElements li"));
+            console.log("AHOIA");
+            createObject(function() {
+                console.log("ASIUDAJSDOIJASDOIJ");
+                createElementContainer($("#elements"), function() {
+                    createBtnsCat($(".containerContent"), $(globalElements));
+                    fixColors($(".containerMenu"));
+                });
+                vAlign($(".vAlign"));
+                setLabels($(".roupas").parent());
+                initialize(function() {
+                    $(".toSelect").click();
+                    $(".containerMenu li").eq(0).click();
+                    centerImg($(".catElements li"));
+                });
             });
         });
         $(window).resize(function() {

@@ -1,29 +1,105 @@
 //globalElements;
 draggedElem = null;
 
-function createObject() {
-	/*$.getJSON("COLOCAR AQUI O ENDEREÇO", function(data) {
-	    console.log(data);
-	    //globalElements = data;
-	    //globalElements = JSON.parse(data);
-	});*/
+function createObject(callback) {
+	var postsCompleted = 0;
+	console.log("entrando em createObject");
+	$.ajax({
+		dataType:"json", 
+		url:"http://minimodesign.com.br/teste/monteseulook/js/elements.json", 
+		success: function(data) {
+			console.log("success getting globalElements");
+			globalElements = data;
+			console.log(globalElements);
+		}, 
+		error: function(a, b, c) {
+			console.log("error getting globalElements");
+			console.log(a); 
+			console.log(b);
+			console.log(c)
+		},
+		type:"post"
+	}).done(function() {
+		postsCompleted++;
+		postComplete(callback, postsCompleted);
+	});
+	$.ajax({
+		dataType:"json", 
+		url:"http://minimodesign.com.br/teste/monteseulook/js/recent.json", 
+		success: function(data) {
+			console.log("success getting recent");
+			console.log(data);
+			recent = data;
+		}, 
+		error: function(a, b, c) {
+			console.log("error getting recent");
+			console.log(a); 
+			console.log(b);
+			console.log(c)
+		},
+		type:"post"
+	}).done(function() {
+		postsCompleted++;
+		postComplete(callback, postsCompleted);
+	});
+	$.ajax({
+		dataType:"json", 
+		url:"http://minimodesign.com.br/teste/monteseulook/js/recomended.json", 
+		success: function(data) {
+			console.log("success getting recomended");
+			console.log(data);
+			recomended = data;
+		}, 
+		error: function(a, b, c) {
+			console.log("error getting recomended");
+			console.log(a); 
+			console.log(b);
+			console.log(c)
+		},
+		type:"post"
+	}).done(function() {
+		postsCompleted++;
+		postComplete(callback, postsCompleted);
+	});
+	
+}
+
+// CUIDADO: FUNÇÃO TÓXICA A FRENTE
+// ps: só deus pode me julgar
+function postComplete(callback, postsCompleted) {
+	if (callback && postsCompleted == 3) {
+		callback();
+	}
+}
+
+function sendInformation() {
+	var infos = getInformation();
+	$.ajax({
+		dataType:"json", 
+		url:"urlmagica", 
+		success: function(data) {
+			console.log("success sending information");
+		}, 
+		error: function(a, b, c) {
+			console.log("error sending information");
+		},
+		type:"post",
+		data: infos
+	});
+}
+
+function getInformation() {
+	var dressed = getObjByAttr("isDressed", true);
+	var favorites = getObjByAttr("fav", true);
+	var infos = {
+		"dressed": dressed,
+		"favorites": favorites,
+		"recent": recent
+	};
+	return infos;
 }
 
 function getContent(type) {
-	/*var url;
-	if (type === "dressed") {
-		url = "";
-	} else if (type === "fav") {
-		url = "";
-	} else if (type === "recomended") {
-		url = "";
-	} else if (type === "recent") {
-		url = "";
-	}
-	$.getJSON(url, function(data) {
-		jsContent = JSON.parse(data);
-		return jsContent;
-	});*/
 	var objects;
 	if (type === "dressed" || type == "fav") {
 		objects = globalElements;
@@ -36,30 +112,6 @@ function getContent(type) {
 }
 
 function postContent(contentObj, type) {
-	/*var url;
-	if (type === "recomended") {
-		url = "";
-	} else if (type === "recent") {
-		url = "";
-	} else {
-		url = "";
-	};
-	$.ajax({
-	    type: "POST",
-	    url: url,
-	    data: JSON.stringify(contentObj),
-	    contentType: "application/json; charset=utf-8",
-	    dataType: "json",
-	    success: function(data){
-	    	console.log("postContent: ");
-	    	console.log(contentObj);
-	    },
-	    failure: function(errMsg) {
-	        console.error("postContent");
-	    }
-	});*/
-//console.log(recent);
-//console.log(contentObj);
 	if (type === "recomended") {
 		console.log("recomended");
 		recomended = contentObj;
