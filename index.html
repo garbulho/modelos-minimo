@@ -46,9 +46,7 @@
 
     <script>
         $(document).ready(function() {
-            console.log("AHOIA");
             createObject(function() {
-                console.log("ASIUDAJSDOIJASDOIJ");
                 createElementContainer($("#elements"), function() {
                     createBtnsCat($(".containerContent"), $(globalElements));
                     fixColors($(".containerMenu"));
@@ -56,9 +54,8 @@
                 vAlign($(".vAlign"));
                 setLabels($(".roupas").parent());
                 initialize(function() {
-                    $(".toSelect").click();
-                    $(".containerMenu li").eq(0).click();
-                    centerImg($(".catElements li"));
+                    var alwaysDressed = ["modelo", "soutien", "panties"];
+                    checkIt(alwaysDressed);
                 });
             });
         });

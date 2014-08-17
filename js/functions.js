@@ -112,13 +112,10 @@ function getContent(type) {
 
 function postContent(contentObj, type) {
 	if (type === "recomended") {
-		console.log("recomended");
 		recomended = contentObj;
 	} else if (type === "recent") {
-		console.log("recent");
 		recent = contentObj;
 	} else {
-		console.log("outros");
 		globalElements = contentObj;
 	}
 }
@@ -465,7 +462,7 @@ function dressIt(elem) {
 	$(dressed).addClass("dressed").attr("onclick", "selectProd(this)");
 
 	if (sameItem.length > 0) {
-		undressIt(sameItem);
+		undressIt(sameItem, true);
 	}
 
 	$("#canvas").append($(dressed));
@@ -480,14 +477,19 @@ function dressIt(elem) {
 	setRecent(elem);
 }
 
-function undressIt(elem) {
-	unselectIt($("[elemId='" + $(elem).attr("id") + "']"));
-	unselectIt($("[copyid='" + $(elem).attr("id") + "']"));
-	
-	$(elem).remove();
+function undressIt(elem, replacement) {
+	if (!replacement && ($(elem).attr("type") == "soutien" || $(elem).attr("type") == "panties" || $(elem).attr("type") == "modelo")) {
+		console.log("objeto nao pode ser removido");
+	} else {
+		var elemType = $(elem).attr("type");
+		unselectIt($("[elemId='" + $(elem).attr("id") + "']"));
+		unselectIt($("[copyid='" + $(elem).attr("id") + "']"));
+		
+		$(elem).remove();
 
-	getObjByAttr("id", $(elem).attr("id"))[0].isDressed = false;
-	postContent(globalElements);
+		getObjByAttr("id", $(elem).attr("id"))[0].isDressed = false;
+		postContent(globalElements);
+	}
 }
 
 function selectProd(elem) {
@@ -515,7 +517,6 @@ function setRecent(elem) {
 		imgElem = elem;
 	}
 	if (imgElem.parent().hasClass("disabled")) {
-		console.log(imgElem.attr("elemid"));
 		var objectElem = getObjByAttr("id", imgElem.attr("elemid"))[0];
 	} else {
 		console.log(imgElem.attr("id"));
@@ -570,7 +571,19 @@ function initialize(callback) {
 	for (i in recomended) {
 		$("#" + recomended[i].id).parent().addClass("recomended");
 	}
+	$(".toSelect").click();
+    $(".containerMenu li").eq(0).click();
+    centerImg($(".catElements li"));
+
 	if (callback) {
 		callback();
+	}
+}
+
+function checkIt(arrayTypes) {
+	for (var i = 0; i < arrayTypes.length; i++) {
+		if($(".dressed[type='" + arrayTypes[i] + "']").length == 0) {
+			$("[type='" + arrayTypes[i] + "']").eq(0).parent().click();
+		}
 	}
 }
