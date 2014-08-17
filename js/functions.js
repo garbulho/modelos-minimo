@@ -111,6 +111,7 @@ function getContent(type) {
 }
 
 function postContent(contentObj, type) {
+	console.log(contentObj);
 	if (type === "recomended") {
 		recomended = contentObj;
 	} else if (type === "recent") {
@@ -479,7 +480,7 @@ function dressIt(elem) {
 
 function undressIt(elem, replacement) {
 	if (!replacement && ($(elem).attr("type") == "soutien" || $(elem).attr("type") == "panties" || $(elem).attr("type") == "modelo")) {
-		console.log("objeto nao pode ser removido");
+		console.log("object cannot be removed");
 	} else {
 		var elemType = $(elem).attr("type");
 		unselectIt($("[elemId='" + $(elem).attr("id") + "']"));
