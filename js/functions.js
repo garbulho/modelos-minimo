@@ -3,7 +3,6 @@ draggedElem = null;
 
 function createObject(callback) {
 	var postsCompleted = 0;
-	console.log("entrando em createObject");
 	$.ajax({
 		dataType:"json", 
 		url:"http://minimodesign.com.br/teste/monteseulook/js/elements.json", 
@@ -243,7 +242,6 @@ function setLabels(elemList) {
 function centerImg(elemList) {
 	$(elemList).each(function(i, e) {
 		var img = $(e).find("img");
-		console.log(img);
 		var auxImg = $("<img/>");
 		auxImg.attr("src", img.attr("src"));
 		auxImg.load(function() {
@@ -299,6 +297,70 @@ function changeTab(tab) {
 	console.log(tab);
 
 	filterContent($(tab).attr("id"));
+
+	createSubcategory();
+}
+
+function createSubcategory() {
+	console.log("createSubcategory");
+	var parent = $(".subcategory");
+	var subCat = [];
+
+	parent.children("li").remove();
+
+	$(".catElements li:visible").each(function(i, e) {
+		if ($(e).hasClass("disabled")) {
+			var elemId = $(e).children("img").attr("elemid");	
+		} else {
+			var elemId = $(e).children("img").attr("id");
+		}
+		var objSubcat = getObjByAttr('id', elemId)[0].type;
+		if (!contains(objSubcat, subCat)) {
+			subCat.push(objSubcat);
+		}
+	});
+
+	for (var i = 0; i < subCat.length; i++) {
+		var subCatItem = "<li id='" + subCat[i] + "' onclick='addFilter(this);'>" + subCat[i] + "</li>";
+		parent.append($(subCatItem));
+	}
+}
+
+function contains(object, group) {
+	for (var i = 0; i < group.length; i++) {
+		if (object === group[i]) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function addFilter(filter) {
+	if ($(filter).hasClass("selected")) {
+		$(filter).removeClass("selected");
+
+		var results = $("li." + $("li.active").attr("id"));
+		var visible = $(".catElements li:visible");
+		visible.hide();
+		results.show();
+	} else {
+		$(filter).siblings().removeClass("selected");
+		$(filter).addClass("selected");
+
+		var results = $("." + $("li.active").attr("id")).find("[type='" + $(filter).attr("id") + "']").parent();
+		var rest = $("." + $("li.active").attr("id")).children("img").not("[type='" + $(filter).attr("id") + "']").parent();
+		results.show();
+		rest.hide();
+	}
+	console.log(results);
+	console.log(results.length);
+	if (results.length > 12 && $("li.active").attr("id") !== "recent") {
+		//scrollPages($(".containerContent"), results);
+		$(".catElements li").css("width", "96px");
+	} else {
+		$(".controller").remove();
+		$(".catElements").css("top", 10);
+	}
 }
 
 function filterContent(filter) {
@@ -308,7 +370,8 @@ function filterContent(filter) {
 	rest.hide();
 
 	if (results.length > 12 && $("li.active").attr("id") !== "recent") {
-		scrollPages($(".containerContent"), results);
+		//scrollPages($(".containerContent"), results);
+		$(".catElements li").css("width", "96px");
 	} else {
 		$(".controller").remove();
 		$(".catElements").css("top", 10);

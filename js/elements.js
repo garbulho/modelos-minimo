@@ -12,7 +12,7 @@ globalElements = {
 		{
 			"title": "Calcinha 00",
 			"id": "calcinha_00",
-			"type": "panties",
+			"type": "Calcinha",
 			"position": {
 				"top": 233,
 				"left": 179 
@@ -26,7 +26,7 @@ globalElements = {
 		{
 			"title": "Soutien 00",
 			"id": "soutien_00",
-			"type": "soutien",
+			"type": "Soutien",
 			"position": {
 				"top": 132,
 				"left": 188 
@@ -40,7 +40,7 @@ globalElements = {
 		{
 			"title": "Calça 00",
 			"id": "calca_00",
-			"type": "bottom",
+			"type": "Calças/Saias",
 			"position": {
 				"top": 235,
 				"left": 177 
@@ -54,7 +54,7 @@ globalElements = {
 		{
 			"title": "Saia 00",
 			"id": "saia_00",
-			"type": "bottom",
+			"type": "Calças/Saias",
 			"position": {
 				"top": 224,
 				"left": 166 
@@ -68,7 +68,7 @@ globalElements = {
 		{
 			"title": "Saia 01",
 			"id": "saia_01",
-			"type": "bottom",
+			"type": "Calças/Saias",
 			"position": {
 				"top": 224,
 				"left": 166 
@@ -82,7 +82,7 @@ globalElements = {
 		{
 			"title": "Saia 02",
 			"id": "saia_02",
-			"type": "bottom",
+			"type": "Calças/Saias",
 			"position": {
 				"top": 224,
 				"left": 166 
@@ -96,7 +96,7 @@ globalElements = {
 		{
 			"title": "Camiseta 00",
 			"id": "camiseta_00",
-			"type": "top",
+			"type": "Blusas",
 			"position": {
 				"top": 127,
 				"left": 158 
@@ -110,7 +110,7 @@ globalElements = {
 		{
 			"title": "Camiseta 01",
 			"id": "camiseta_01",
-			"type": "top",
+			"type": "Blusas",
 			"position": {
 				"top": 127,
 				"left": 158 
@@ -124,7 +124,7 @@ globalElements = {
 		{
 			"title": "Camiseta 02",
 			"id": "camiseta_02",
-			"type": "top",
+			"type": "Blusas",
 			"position": {
 				"top": 127,
 				"left": 158 
@@ -138,7 +138,7 @@ globalElements = {
 		{
 			"title": "Camiseta 03",
 			"id": "camiseta_03",
-			"type": "top",
+			"type": "Blusas",
 			"position": {
 				"top": 127,
 				"left": 158 
@@ -152,7 +152,7 @@ globalElements = {
 		{
 			"title": "Camiseta 04",
 			"id": "camiseta_04",
-			"type": "top",
+			"type": "Blusas",
 			"position": {
 				"top": 127,
 				"left": 158 
@@ -166,7 +166,7 @@ globalElements = {
 		{
 			"title": "Camiseta 05",
 			"id": "camiseta_05",
-			"type": "top",
+			"type": "Blusas",
 			"position": {
 				"top": 127,
 				"left": 158 
@@ -180,7 +180,7 @@ globalElements = {
 		{
 			"title": "Colar 00",
 			"id": "colar_00",
-			"type": "accessories",
+			"type": "Acessorios",
 			"position": {
 				"top": 122,
 				"left": 204 
@@ -194,7 +194,7 @@ globalElements = {
 		{
 			"title": "Colar 01",
 			"id": "colar_01",
-			"type": "accessories",
+			"type": "Acessorios",
 			"position": {
 				"top": 122,
 				"left": 204 
@@ -208,7 +208,7 @@ globalElements = {
 		{
 			"title": "Maiô 00",
 			"id": "maio_00",
-			"type": "swimsuit",
+			"type": "Moda Praia",
 			"position": {
 				"top": 130,
 				"left": 171 
@@ -222,7 +222,7 @@ globalElements = {
 		{
 			"title": "Maiô 01",
 			"id": "maio_01",
-			"type": "swimsuit",
+			"type": "Moda Praia",
 			"position": {
 				"top": 130,
 				"left": 171 
@@ -251,7 +251,7 @@ globalElements = {
 	"modelo": [
 		{
 			"id": "modelo_00",
-			"type": "modelo",
+			"type": "Modelo",
 			"position": {
 				"top": 0,
 				"left": 0 
@@ -262,7 +262,7 @@ globalElements = {
 		},
 		{
 			"id": "modelo_01",
-			"type": "modelo",
+			"type": "Modelo",
 			"position": {
 				"top": 0,
 				"left": 0 
@@ -275,7 +275,7 @@ globalElements = {
 	"fundo": [ 
 		{
 			"id": "background_00",
-			"type": "background",
+			"type": "Fundo",
 			"title": "Background A",
 			"isDressed": true,
 			"fav": false,
@@ -283,7 +283,7 @@ globalElements = {
 		},
 		{
 			"id": "background_01",
-			"type": "background",
+			"type": "Fundo",
 			"title": "Background B",
 			"isDressed": false,
 			"fav": false,
@@ -291,7 +291,7 @@ globalElements = {
 		},
 		{
 			"id": "background_02",
-			"type": "background",
+			"type": "Fundo",
 			"title": "Background C",
 			"isDressed": false,
 			"fav": false,
@@ -302,7 +302,7 @@ globalElements = {
 		{
 			"id": "sombra_00",
 			"title": "Sombra 01",
-			"type": "shadow",
+			"type": "Sombra",
 			"position": {
 				"top": 315,
 				"left": 171 
@@ -315,7 +315,7 @@ globalElements = {
 		{
 			"id": "sombra_01",
 			"title": "Sombra 02",
-			"type": "shadow",
+			"type": "Sombra",
 			"position": {
 				"top": 485,
 				"left": 105 
@@ -332,7 +332,7 @@ recent = [
 			{
 				"title": "Soutien 00",
 				"id": "soutien_00",
-				"type": "soutien",
+				"type": "Soutien",
 				"position": {
 					"top": 132,
 					"left": 188 
@@ -346,7 +346,7 @@ recent = [
 			{
 				"title": "Calça 00",
 				"id": "calca_00",
-				"type": "bottom",
+				"type": "Calças/Saias",
 				"position": {
 					"top": 235,
 					"left": 177 
@@ -360,7 +360,7 @@ recent = [
 			{
 				"title": "Saia 00",
 				"id": "saia_00",
-				"type": "bottom",
+				"type": "Calças/Saias",
 				"position": {
 					"top": 224,
 					"left": 166 
@@ -374,7 +374,7 @@ recent = [
 			{
 				"title": "Saia 01",
 				"id": "saia_01",
-				"type": "bottom",
+				"type": "Calças/Saias",
 				"position": {
 					"top": 224,
 					"left": 166 
@@ -390,7 +390,7 @@ recomended = [
 			{
 				"title": "Saia 02",
 				"id": "saia_02",
-				"type": "bottom",
+				"type": "Calças/Saias",
 				"position": {
 					"top": 224,
 					"left": 166 
@@ -404,7 +404,7 @@ recomended = [
 			{
 				"title": "Camiseta 00",
 				"id": "camiseta_00",
-				"type": "top",
+				"type": "Blusas",
 				"position": {
 					"top": 127,
 					"left": 158 
@@ -418,7 +418,7 @@ recomended = [
 			{
 				"title": "Camiseta 01",
 				"id": "camiseta_01",
-				"type": "top",
+				"type": "Blusas",
 				"position": {
 					"top": 127,
 					"left": 158 
@@ -432,7 +432,7 @@ recomended = [
 			{
 				"title": "Camiseta 02",
 				"id": "camiseta_02",
-				"type": "top",
+				"type": "Blusas",
 				"position": {
 					"top": 127,
 					"left": 158 

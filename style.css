@@ -210,7 +210,8 @@ html {
 	top: 35px;
 	height: 440px !important;
 	z-index: 0;
-	overflow: hidden;
+	overflow-y: auto;
+	overflow-x: hidden;
 	padding: 10px;
 }
 
@@ -342,18 +343,25 @@ html {
 	display: block;
 }
 
-.searchResults {
+.subcategory {
 	font-size: 11px;
 	font-weight: bold;
 	padding: 10px 5px;
 }
-	.searchResults li {
+	.subcategory li {
+		cursor: pointer;
 		font-weight: lighter;
 		line-height: 20px;
 		margin-top: 5px;
-		font-size: 13px;
+		font-size: 11px;
+		text-transform: uppercase;
 	}
-
+	.subcategory li.selected {
+		border-bottom: 3px solid;
+		font-weight: bold;
+		color: #aaa;
+		line-height: 17px;
+	}
 .dressed {
 	position: absolute;
 	margin-top: 0 !important;
